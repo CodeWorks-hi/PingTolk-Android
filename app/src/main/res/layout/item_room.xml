@@ -59,7 +59,7 @@
             <Button
                 android:id="@+id/btnEnterRoom"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="#247CFF"
                 android:letterSpacing="0.02"
                 android:paddingStart="20dp"
