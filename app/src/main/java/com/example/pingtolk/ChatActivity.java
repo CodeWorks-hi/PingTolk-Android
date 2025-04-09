@@ -92,7 +92,13 @@ public class ChatActivity extends AppCompatActivity {
                 editMessage.setText("");
             }
         });
+
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            finish(); // 현재 액티비티 종료 → 이전 화면으로 이동
+        });
+
     }
+
 
     private void listenForMessages() {
         chatRef.orderBy("timestamp")
@@ -116,5 +122,7 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
     }
 }
