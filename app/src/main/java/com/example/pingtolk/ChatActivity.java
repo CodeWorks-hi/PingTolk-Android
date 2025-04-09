@@ -59,9 +59,18 @@ public class ChatActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         chatRef = db.collection("rooms").document(familyCode).collection("messages");
 
-        // 입장 메시지
-        Message welcomeMsg = new Message("SYSTEM", nickname + "님이 입장하셨습니다", System.currentTimeMillis());
-        chatRef.add(welcomeMsg);
+        // ✅ SharedPreferences로 입장 메시지 중복 방지
+        String enterKey = familyCode + "_" + nickname + "_entered";
+        boolean alreadyEntered = getSharedPreferences("PingTalkPrefs", MODE_PRIVATE).getBoolean(enterKey, false);
+
+        if (!alreadyEntered) {
+            Message welcomeMsg = new Message("SYSTEM", nickname + "님이 입장하셨습니다", System.currentTimeMillis());
+            chatRef.add(welcomeMsg);
+
+            getSharedPreferences("PingTalkPrefs", MODE_PRIVATE).edit()
+                    .putBoolean(enterKey, true)
+                    .apply();
+        }
 
         // 리사이클러뷰 설정
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -73,7 +82,7 @@ public class ChatActivity extends AppCompatActivity {
         // 메시지 수신
         listenForMessages();
 
-        // 엔터키 입력으로 전송
+        // 엔터키 전송
         editMessage.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEND ||
                     (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
@@ -83,7 +92,7 @@ public class ChatActivity extends AppCompatActivity {
             return false;
         });
 
-        // 전송 버튼 클릭
+        // 전송 버튼
         btnSend.setOnClickListener(v -> {
             String text = editMessage.getText().toString().trim();
             if (!text.isEmpty()) {
@@ -93,12 +102,9 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> {
-            finish(); // 현재 액티비티 종료 → 이전 화면으로 이동
-        });
-
+        // 뒤로가기
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
-
 
     private void listenForMessages() {
         chatRef.orderBy("timestamp")
