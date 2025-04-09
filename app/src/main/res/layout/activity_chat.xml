@@ -15,6 +15,19 @@
         android:gravity="center_vertical"
         android:elevation="2dp">
 
+
+        <!-- 공유 버튼 (오른쪽 끝) -->
+        <ImageView
+            android:id="@+id/btnShareRoom"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/share"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_share" />
+
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="32dp"
@@ -50,15 +63,16 @@
     </RelativeLayout>
 
     <!-- 채팅 메시지 리스트 -->
+
+    <!-- 메시지 입력창 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMessages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="12dp"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        android:padding="12dp" />
 
-    <!-- 메시지 입력창 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,7 +95,7 @@
 
         <ImageButton
             android:id="@+id/btnSend"
-            android:layout_width="48dp"
+            android:layout_width="43dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/btn_send"

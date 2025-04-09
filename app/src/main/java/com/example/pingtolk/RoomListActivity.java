@@ -40,16 +40,6 @@ public class RoomListActivity extends AppCompatActivity {
         // 뒤로가기 버튼 클릭
         btnBack.setOnClickListener(v -> finish());
 
-        // 공유 버튼 클릭
-        btnShareRoom.setOnClickListener(v -> {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "PingTalk 채팅방 초대");
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    nickname + "님이 PingTalk에 참여 중입니다.\n\n" +
-                            "앱 설치하기: https://play.google.com/store/apps/details?id=com.example.pingtolk");
-            startActivity(Intent.createChooser(shareIntent, "공유할 앱 선택"));
-        });
 
         // 설정 버튼 클릭
         btnSettings.setOnClickListener(v -> {
