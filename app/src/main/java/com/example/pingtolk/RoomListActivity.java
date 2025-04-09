@@ -23,7 +23,7 @@ public class RoomListActivity extends AppCompatActivity {
     List<Map<String, Object>> roomList = new ArrayList<>();
     String nickname;
 
-    ImageView btnBack, btnShare; //  뒤로가기 & 공유 버튼
+    ImageView btnBack, btnShareRoom, btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +32,15 @@ public class RoomListActivity extends AppCompatActivity {
 
         nickname = getIntent().getStringExtra("nickname");
 
-        //  뒤로가기 및 공유 버튼 연결
-        ImageView btnBack = findViewById(R.id.btnBack);
-        ImageView btnShareRoom = findViewById(R.id.btnShareRoom);
+        // 버튼 바인딩
+        btnBack = findViewById(R.id.btnBack);
+        btnShareRoom = findViewById(R.id.btnShareRoom);
+        btnSettings = findViewById(R.id.btnSettings);
 
-        //  뒤로가기 버튼 클릭
+        // 뒤로가기 버튼 클릭
         btnBack.setOnClickListener(v -> finish());
 
-        //  공유 버튼 클릭
+        // 공유 버튼 클릭
         btnShareRoom.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -50,7 +51,14 @@ public class RoomListActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(shareIntent, "공유할 앱 선택"));
         });
 
-        //  RecyclerView 설정
+        // 설정 버튼 클릭
+        btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(RoomListActivity.this, ProfileActivity.class);
+            intent.putExtra("nickname", nickname);
+            startActivity(intent);
+        });
+
+        // RecyclerView 설정
         recyclerView = findViewById(R.id.recyclerRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,11 +68,11 @@ public class RoomListActivity extends AppCompatActivity {
             intent.putExtra("familyCode", familyCode);
             intent.putExtra("nickname", nickname);
             startActivity(intent);
-        }, nickname); //  세 번째 인자로 nickname 전달
+        }, nickname);  // ← 추가된 인자
 
         recyclerView.setAdapter(adapter);
 
-        //  방 목록 로드
+        // 방 목록 불러오기
         loadRooms();
     }
 
@@ -76,7 +84,7 @@ public class RoomListActivity extends AppCompatActivity {
                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                         Map<String, Object> data = doc.getData();
                         if (data != null) {
-                            data.put("code", doc.getId()); // 문서 ID를 code로
+                            data.put("code", doc.getId());
                             roomList.add(data);
                         }
                     }
@@ -85,6 +93,4 @@ public class RoomListActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "방 목록을 불러올 수 없습니다", Toast.LENGTH_SHORT).show());
     }
-
-
 }
