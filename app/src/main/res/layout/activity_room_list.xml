@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:background="#F4F7FB">
 
-    <!-- 🔹 상단 바 -->
+    <!--  상단 바 -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:textColor="#247CFF" />
     </RelativeLayout>
 
-    <!-- 🔁 채팅방 리스트 -->
+    <!--  채팅방 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerRooms"
         android:layout_width="match_parent"

@@ -46,22 +46,22 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
         String code = (String) room.get("code");
         String title = room.get("title") != null ? (String) room.get("title") : code;
 
-        // 🔹 방 제목 또는 코드 표시
+        //  방 제목 또는 코드 표시
         holder.textRoomCode.setText("Ping Room: " + title);
 
-        // 🔹 생성자 표시
+        //  생성자 표시
         Object createdBy = room.get("created_by");
         holder.textCreatedBy.setText("생성자: " + (createdBy != null ? createdBy.toString() : ""));
 
-        // 🔹 입장 버튼 클릭 이벤트
+        //  입장 버튼 클릭 이벤트
         holder.btnEnter.setOnClickListener(v -> listener.onRoomClick(room));
 
-        // 🔹 즐겨찾기 상태 설정
+        //  즐겨찾기 상태 설정
         boolean isFavorite = Boolean.TRUE.equals(room.get("isFavorite"));
         holder.btnFavorite.setImageResource(isFavorite ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
         holder.btnFavorite.setTag(isFavorite);
 
-        // 🔹 즐겨찾기 토글 처리
+        //  즐겨찾기 토글 처리
         holder.btnFavorite.setOnClickListener(v -> {
             boolean nowFavorite = holder.btnFavorite.getTag() != null && (boolean) holder.btnFavorite.getTag();
 
