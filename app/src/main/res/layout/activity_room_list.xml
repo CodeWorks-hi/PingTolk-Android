@@ -82,7 +82,7 @@
         android:padding="8dp"
         android:clipToPadding="false" />
 
-    <!-- ➕ 방 만들기 버튼 -->
+    <!--  방 만들기 버튼 -->
     <Button
         android:id="@+id/btnCreate"
         android:layout_width="wrap_content"
