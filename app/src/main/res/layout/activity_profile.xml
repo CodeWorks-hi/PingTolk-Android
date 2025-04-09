@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< Updated upstream
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+=======
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> Stashed changes
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,6 +19,10 @@
         android:paddingEnd="16dp"
         android:gravity="center_vertical">
 
+<<<<<<< Updated upstream
+        <!-- 🔙 뒤로가기 버튼 -->
+=======
+>>>>>>> Stashed changes
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
@@ -23,6 +32,10 @@
             android:layout_alignParentStart="true"
             android:contentDescription="@string/back" />
 
+<<<<<<< Updated upstream
+        <!-- 📌 타이틀 텍스트 -->
+=======
+>>>>>>> Stashed changes
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,6 +45,10 @@
             android:textColor="#000000"
             android:layout_centerInParent="true" />
 
+<<<<<<< Updated upstream
+        <!-- 💾 저장 버튼 -->
+=======
+>>>>>>> Stashed changes
         <TextView
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
@@ -52,6 +69,10 @@
         android:paddingTop="24dp"
         android:paddingBottom="16dp">
 
+<<<<<<< Updated upstream
+        <!-- 👤 프로필 이미지 -->
+=======
+>>>>>>> Stashed changes
         <ImageView
             android:id="@+id/profileImage"
             android:layout_width="80dp"
@@ -61,6 +82,10 @@
             android:background="@drawable/circle_background"
             android:contentDescription="@string/profile_image" />
 
+<<<<<<< Updated upstream
+        <!-- 🏷️ 닉네임 라벨 -->
+=======
+>>>>>>> Stashed changes
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +94,10 @@
             android:textColor="#888888"
             android:layout_marginTop="12dp" />
 
+<<<<<<< Updated upstream
+        <!-- 🖋️ 닉네임 텍스트 -->
+=======
+>>>>>>> Stashed changes
         <TextView
             android:id="@+id/textNickname"
             android:layout_width="wrap_content"
@@ -79,16 +108,27 @@
             android:textColor="#000000"
             android:layout_marginTop="4dp" />
 
+<<<<<<< Updated upstream
+        <!-- ✏️ 수정 버튼 -->
+=======
+>>>>>>> Stashed changes
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:text="@string/btn_edit"
             android:textSize="12sp"
+<<<<<<< Updated upstream
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#EEEEEE"
+            android:textColor="#000000"
+            android:background="@drawable/bg_outline_button"/>
+=======
             android:backgroundTint="#EEEEEE"
             android:textColor="#000000"
             android:background="@drawable/bg_outline_button"
             android:layout_marginTop="8dp" />
+>>>>>>> Stashed changes
     </LinearLayout>
 
     <!-- 🔹 설정 항목 리스트 -->
@@ -132,7 +172,11 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
+<<<<<<< Updated upstream
+            <!-- 🔔 알림 설정 -->
+=======
             <!-- 🔔 알림 -->
+>>>>>>> Stashed changes
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,6 +206,10 @@
 
             <!-- 🔒 개인정보 보호 -->
             <LinearLayout
+<<<<<<< Updated upstream
+                android:id="@+id/layoutPrivacy"
+=======
+>>>>>>> Stashed changes
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -192,6 +240,10 @@
 
             <!-- ❓ 도움말 -->
             <LinearLayout
+<<<<<<< Updated upstream
+                android:id="@+id/layoutHelp"
+=======
+>>>>>>> Stashed changes
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -219,6 +271,10 @@
                     android:layout_height="20dp"
                     android:src="@drawable/ic_arrow_right" />
             </LinearLayout>
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
