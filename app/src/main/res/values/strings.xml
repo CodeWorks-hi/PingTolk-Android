@@ -17,19 +17,8 @@
     <string name="btn_save">저장</string>
     <string name="btn_edit">수정</string>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    <!-- 상단 타이틀 -->
+
     <string name="room_name">Ping Room</string>
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    <!-- 🏷️ 채팅 화면 텍스트 -->
-    <string name="room_name">우리 가족</string>
->>>>>>> Stashed changes
     <string name="room_code">FAMILY123</string>
     <string name="text_sender">보낸사람</string>
     <string name="message_hint">메시지 내용</string>
