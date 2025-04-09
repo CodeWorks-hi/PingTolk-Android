@@ -1,7 +1,7 @@
 <resources>
 
     <!--  앱 정보 -->
-    <string name="app_name">PingTalk</string>
+    <string name="app_name">PingTolk</string>
     <string name="app_subtitle">가족과 함께하는 프라이빗 채팅</string>
 
     <!--  입력창 힌트 -->

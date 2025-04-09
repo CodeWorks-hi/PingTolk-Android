@@ -1,0 +1,68 @@
+<resources>
+
+    <!-- App Info -->
+    <string name="app_name">PingTolk</string>
+    <string name="app_subtitle">Private chat for your family</string>
+
+    <!-- Input Hints -->
+    <string name="hint_nickname">Enter your nickname</string>
+    <string name="hint_family_code">Enter family code</string>
+    <string name="hint_password">Enter password</string>
+    <string name="hint_message">Enter message</string>
+
+    <!-- Buttons -->
+    <string name="btn_create">Create Room</string>
+    <string name="btn_join">Join</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_share">Share</string>
+    <string name="btn_record">Record</string>
+    <string name="btn_attach">Attach</string>
+    <string name="btn_favorite">Favorite</string>
+    <string name="btn_settings">Settings</string>
+
+    <!-- Top Titles -->
+    <string name="room_name">Ping Room</string>
+    <string name="room_code">FAMILY123</string>
+    <string name="room_list_title">Chat Room List</string>
+
+    <!-- Chat UI -->
+    <string name="text_sender">Sender</string>
+    <string name="message_hint">Enter message</string>
+    <string name="auto_reply_prefix">[Auto Reply]</string>
+    <string name="urgent_mark">[Urgent]</string>
+
+    <!-- Sample Messages -->
+    <string name="sample_time">6:30 PM</string>
+    <string name="sample_my_msg">Sent message</string>
+    <string name="sample_other_sender">Dad</string>
+    <string name="sample_other_msg">Received message</string>
+    <string name="sample_date">April 9, 2025</string>
+
+    <!-- Auto Reply Settings -->
+    <string name="auto_reply_title">Auto Reply Settings</string>
+    <string name="auto_reply_message_hint">Enter your auto reply message</string>
+    <string name="auto_reply_time_start">Select Start Time</string>
+    <string name="auto_reply_time_end">Select End Time</string>
+    <string name="auto_reply_sample">I&apos;m currently away. I&apos;ll get back to you later!</string>
+
+
+    <!-- Sharing -->
+    <string name="share_invite_title">PingTalk Chat Room Invitation</string>
+    <string name="share_invite_message">Join our chat! Download the app: https://play.google.com/store/apps/details?id=com.example.pingtolk</string>
+
+    <!-- Chat Room List Filters -->
+    <string name="check_favorite_only">Show Favorites Only</string>
+    <string name="spinner_sort_label">Sort By</string>
+
+    <!-- Profile Settings -->
+    <string name="profile_title">Profile Settings</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="label_nickname">Nickname</string>
+    <string name="nickname_sample">Minji Kim</string>
+    <string name="label_language">Language</string>
+    <string name="language_korean">Korean</string>
+
+</resources>
