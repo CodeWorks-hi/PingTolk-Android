@@ -79,10 +79,11 @@
             android:id="@+id/btnSend"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_send"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_send"
+            android:padding="8dp"
+            android:rotation="-40"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/btn_send" />
-
+            android:src="@drawable/ic_send" />
     </LinearLayout>
 </LinearLayout>

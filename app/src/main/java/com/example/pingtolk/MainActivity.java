@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class MainActivity extends AppCompatActivity {
 
     EditText editNickname, editFamilyCode, editPassword;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance(); // ✅ Firebase 초기화
 
-        // ✅ 저장된 정보가 모두 있을 경우 자동 입장
+        // ✅ 저장된 정보가 모두 있을 경우 자동 입장 → 리스트 화면으로 이동
         String savedNick = prefs.getString("nickname", "");
         String savedCode = prefs.getString("familyCode", "");
         String savedPw = prefs.getString("password", "");
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         if (!savedNick.isEmpty() && !savedCode.isEmpty() && !savedPw.isEmpty()) {
             db.collection("rooms").document(savedCode).get().addOnSuccessListener(doc -> {
                 if (doc.exists() && savedPw.equals(doc.getString("password"))) {
-                    openChat(savedCode, savedNick);
+                    openRoomList(savedNick);
                 }
             });
         }
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                                         .apply();
 
                                 Toast.makeText(this, "방이 생성되었습니다", Toast.LENGTH_SHORT).show();
-                                openChat(familyCode, nickname);
+                                openRoomList(nickname); // ✅ 리스트로 이동
                             });
                 }
             });
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                                 .putString("familyCode", familyCode)
                                 .putString("password", password)
                                 .apply();
-                        openChat(familyCode, nickname);
+                        openRoomList(nickname); // ✅ 리스트로 이동
                     } else {
                         Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
                     }
@@ -133,10 +132,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // ✅ 채팅 화면 이동
-    private void openChat(String familyCode, String nickname) {
-        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-        intent.putExtra("familyCode", familyCode);
+    // ✅ 채팅방 리스트 화면 이동
+    private void openRoomList(String nickname) {
+        Intent intent = new Intent(MainActivity.this, RoomListActivity.class);
         intent.putExtra("nickname", nickname);
         startActivity(intent);
     }

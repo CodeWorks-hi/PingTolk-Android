@@ -15,7 +15,7 @@
     <string name="btn_send">전송</string>
 
     <!-- 상단 타이틀 -->
-    <string name="room_name">우리 가족</string>
+    <string name="room_name">Ping Room</string>
     <string name="room_code">FAMILY123</string>
     <string name="text_sender">보낸사람</string>
     <string name="message_hint">메시지 내용</string>

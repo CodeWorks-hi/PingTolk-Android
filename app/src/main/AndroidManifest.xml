@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pingtolk">
 
-    <!-- ✅ Firebase 연동에 필요한 권한 -->
+    <!-- ✅ Firebase 관련 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -12,7 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/Theme.PingTolk">
 
-        <!-- ✅ 메시지 수신 서비스 -->
+        <!-- ✅ Firebase 메시지 수신 서비스 등록 -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -21,7 +21,17 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ChatActivity" />
+        <!-- ✅ 채팅방 목록 액티비티 (로그인 후 이동) -->
+        <activity
+            android:name=".RoomListActivity"
+            android:exported="false" />
+
+        <!-- ✅ 채팅 화면 액티비티 -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+
+        <!-- ✅ 앱 실행 시작점 - 로그인 화면 -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
