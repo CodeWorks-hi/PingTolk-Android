@@ -31,15 +31,15 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // 🔙 뒤로가기 버튼
+        //  뒤로가기 버튼
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        // 💾 저장 버튼
+        //  저장 버튼
         findViewById(R.id.btnSave).setOnClickListener(v ->
                 Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show()
         );
 
-        // 🔧 닉네임 수정 버튼
+        //  닉네임 수정 버튼
         textNickname = findViewById(R.id.textNickname);
         findViewById(R.id.btnEdit).setOnClickListener(v -> {
             // 간단한 수정 예시: 토글 방식
@@ -50,36 +50,36 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // 🌙 다크모드 설정 스위치
+        //  다크모드 설정 스위치
         switchDarkMode = findViewById(R.id.switchDarkMode);
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             int mode = isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
             AppCompatDelegate.setDefaultNightMode(mode);
         });
 
-        // 🔔 알림 설정 스위치
+        //  알림 설정 스위치
         switchNotification = findViewById(R.id.switchNotification);
         switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String msg = isChecked ? "알림이 켜졌습니다" : "알림이 꺼졌습니다";
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         });
 
-        // 👤 프로필 이미지 클릭 시 갤러리 열기
+        //  프로필 이미지 클릭 시 갤러리 열기
         profileImage = findViewById(R.id.profileImage);
         profileImage.setOnClickListener(v -> checkGalleryPermission());
 
-        // 🔒 개인정보 보호 클릭 이벤트
+        //  개인정보 보호 클릭 이벤트
         findViewById(R.id.layoutPrivacy).setOnClickListener(v ->
                 Toast.makeText(this, "개인정보 보호 설정 화면입니다", Toast.LENGTH_SHORT).show()
         );
 
-        // ❓ 도움말 클릭 이벤트
+        //  도움말 클릭 이벤트
         findViewById(R.id.layoutHelp).setOnClickListener(v ->
                 Toast.makeText(this, "도움말 화면입니다", Toast.LENGTH_SHORT).show()
         );
     }
 
-    // ✅ 갤러리 권한 확인 및 요청
+    //  갤러리 권한 확인 및 요청
     private void checkGalleryPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
@@ -96,14 +96,14 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ 갤러리 열기
+    //  갤러리 열기
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
-    // ✅ 갤러리에서 이미지 선택 결과 처리
+    //  갤러리에서 이미지 선택 결과 처리
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -116,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ 권한 요청 결과 처리
+    //  권한 요청 결과 처리
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

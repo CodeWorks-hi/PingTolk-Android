@@ -20,7 +20,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     EditText editNickname, editFamilyCode, editPassword;
-    Button btnCreate, btnJoin;
+    Button  btnJoin;
     FirebaseFirestore db;
     SharedPreferences prefs;
 
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         editNickname = findViewById(R.id.editNickname);
         editFamilyCode = findViewById(R.id.editFamilyCode);
         editPassword = findViewById(R.id.editPassword);
-        btnCreate = findViewById(R.id.btnCreate);
         btnJoin = findViewById(R.id.btnJoin);
 
         // ✅ SharedPreferences 설정 및 값 채워넣기
@@ -64,42 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-        // ✅ 방 만들기
-        btnCreate.setOnClickListener(v -> {
-            String nickname = editNickname.getText().toString().trim();
-            String familyCode = editFamilyCode.getText().toString().trim();
-            String password = editPassword.getText().toString().trim();
-
-            if (nickname.isEmpty() || familyCode.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            db.collection("rooms").document(familyCode).get().addOnSuccessListener(doc -> {
-                if (doc.exists()) {
-                    Toast.makeText(this, "이미 존재하는 가족코드입니다", Toast.LENGTH_SHORT).show();
-                } else {
-                    Map<String, Object> roomData = new HashMap<>();
-                    roomData.put("password", password);
-                    roomData.put("created_by", nickname);
-                    roomData.put("created_at", new Date());
-
-                    db.collection("rooms").document(familyCode).set(roomData)
-                            .addOnSuccessListener(unused -> {
-                                // ✅ 저장
-                                prefs.edit()
-                                        .putString("nickname", nickname)
-                                        .putString("familyCode", familyCode)
-                                        .putString("password", password)
-                                        .apply();
-
-                                Toast.makeText(this, "방이 생성되었습니다", Toast.LENGTH_SHORT).show();
-                                openRoomList(nickname); // ✅ 리스트로 이동
-                            });
-                }
-            });
-        });
 
         // ✅ 방 입장
         btnJoin.setOnClickListener(v -> {
