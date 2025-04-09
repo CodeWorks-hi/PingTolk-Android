@@ -21,6 +21,7 @@
             </intent-filter>
         </service>
 
+<<<<<<< Updated upstream
         <!-- ✅ 채팅방 목록 액티비티 (로그인 후 이동) -->
         <activity
             android:name=".RoomListActivity"
@@ -32,6 +33,16 @@
             android:exported="false" />
 
         <!-- ✅ 앱 실행 시작점 - 로그인 화면 -->
+=======
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".ProfileActivity" />
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         <activity
             android:name=".MainActivity"
             android:exported="true">
