@@ -54,7 +54,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
 
         // 즐겨찾기 상태 초기화
         boolean isFavorite = Boolean.TRUE.equals(room.get("isFavorite"));
-        holder.btnFavorite.setImageResource(isFavorite ? R.drawable.star: R.drawable.star_gray);
+        holder.btnFavorite.setImageResource(isFavorite ? R.drawable.star: R.drawable.ic_star_outline);
         holder.btnFavorite.setTag(isFavorite);
 
         // 즐겨찾기 클릭 처리
@@ -67,11 +67,11 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
 
             if (nowFavorite) {
                 favRef.delete();
-                holder.btnFavorite.setImageResource(R.drawable.star_gray);
+                holder.btnFavorite.setImageResource(R.drawable.star);
                 holder.btnFavorite.setTag(false);
             } else {
                 favRef.set(new HashMap<>());
-                holder.btnFavorite.setImageResource(R.drawable.star_yellow);
+                holder.btnFavorite.setImageResource(R.drawable.ic_star_outline);
                 holder.btnFavorite.setTag(true);
             }
         });

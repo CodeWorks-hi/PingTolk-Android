@@ -23,7 +23,7 @@ public class RoomListActivity extends AppCompatActivity {
     List<Map<String, Object>> roomList = new ArrayList<>();
     String nickname;
 
-    ImageView btnBack, btnShare; // ✅ 뒤로가기 & 공유 버튼
+    ImageView btnBack, btnShare; //  뒤로가기 & 공유 버튼
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +32,14 @@ public class RoomListActivity extends AppCompatActivity {
 
         nickname = getIntent().getStringExtra("nickname");
 
-        // ✅ 뒤로가기 및 공유 버튼 연결
+        //  뒤로가기 및 공유 버튼 연결
         ImageView btnBack = findViewById(R.id.btnBack);
         ImageView btnShareRoom = findViewById(R.id.btnShareRoom);
 
-        // ✅ 뒤로가기 버튼 클릭
+        //  뒤로가기 버튼 클릭
         btnBack.setOnClickListener(v -> finish());
 
-        // ✅ 공유 버튼 클릭
+        //  공유 버튼 클릭
         btnShareRoom.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -50,7 +50,7 @@ public class RoomListActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(shareIntent, "공유할 앱 선택"));
         });
 
-        // ✅ RecyclerView 설정
+        //  RecyclerView 설정
         recyclerView = findViewById(R.id.recyclerRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,11 +60,11 @@ public class RoomListActivity extends AppCompatActivity {
             intent.putExtra("familyCode", familyCode);
             intent.putExtra("nickname", nickname);
             startActivity(intent);
-        });
+        }, nickname); //  세 번째 인자로 nickname 전달
 
         recyclerView.setAdapter(adapter);
 
-        // ✅ 방 목록 로드
+        //  방 목록 로드
         loadRooms();
     }
 
