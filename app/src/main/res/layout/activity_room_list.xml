@@ -14,6 +14,19 @@
         android:paddingEnd="16dp"
         android:gravity="center_vertical">
 
+        <!-- 설정 버튼 -->
+        <ImageView
+            android:id="@+id/btnSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toStartOf="@id/btnShareRoom"
+            android:layout_marginEnd="12dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_settings"
+            android:background="@android:color/transparent"
+            android:contentDescription=/>
+
+
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="32dp"
