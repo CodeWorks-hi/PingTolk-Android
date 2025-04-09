@@ -1,29 +1,49 @@
 <resources>
-    <!-- 앱 정보 -->
+
+    <!-- 🌐 앱 정보 -->
     <string name="app_name">PingTalk</string>
     <string name="app_subtitle">가족과 함께하는 프라이빗 채팅</string>
 
-    <!-- 입력창 -->
+    <!-- 📝 입력창 힌트 -->
     <string name="hint_nickname">닉네임을 입력하세요</string>
     <string name="hint_family_code">가족코드를 입력하세요</string>
     <string name="hint_password">비밀번호를 입력하세요</string>
     <string name="hint_message">메시지를 입력하세요</string>
 
-    <!-- 버튼 -->
+    <!-- 🔘 버튼 텍스트 -->
     <string name="btn_create">방 만들기</string>
     <string name="btn_join">입장하기</string>
     <string name="btn_send">전송</string>
+    <string name="btn_save">저장</string>
+    <string name="btn_edit">수정</string>
 
+<<<<<<< Updated upstream
     <!-- 상단 타이틀 -->
     <string name="room_name">Ping Room</string>
+=======
+    <!-- 🏷️ 채팅 화면 텍스트 -->
+    <string name="room_name">우리 가족</string>
+>>>>>>> Stashed changes
     <string name="room_code">FAMILY123</string>
     <string name="text_sender">보낸사람</string>
     <string name="message_hint">메시지 내용</string>
+
+    <!-- 🧪 샘플 메시지 -->
     <string name="sample_time">오후 6:30</string>
     <string name="sample_my_msg">보낸 메시지</string>
     <string name="sample_other_sender">아빠</string>
     <string name="sample_other_msg">받은 메시지</string>
     <string name="sample_date">2025년 4월 9일</string>
 
+    <!-- 🔙 공통 UI -->
+    <string name="back">뒤로가기</string>
+
+    <!-- 👤 프로필 설정 화면 -->
+    <string name="profile_title">프로필 설정</string>
+    <string name="profile_image">프로필 이미지</string>
+    <string name="label_nickname">닉네임</string>
+    <string name="nickname_sample">김민지</string>
+    <string name="label_language">언어</string>
+    <string name="language_korean">한국어</string>
 
 </resources>
