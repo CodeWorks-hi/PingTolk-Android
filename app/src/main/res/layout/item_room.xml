@@ -13,26 +13,45 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/textRoomCode"
-            android:layout_width="wrap_content"
+        <!--  방 코드 + 즐겨찾기 (오른쪽) -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ping Room: CODE123"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="#247CFF" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <TextView
+                android:id="@+id/textRoomCode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ping Room: CODE123"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#247CFF" />
+
+            <ImageView
+                android:id="@+id/btnFavorite"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/star"
+                android:contentDescription="즐겨찾기 버튼" />
+        </LinearLayout>
+
+        <!--  생성자 -->
+
+        <!--  입장 버튼 -->
         <TextView
             android:id="@+id/textCreatedBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="생성자: 홍길동"
-            android:textSize="14sp"
-            android:textColor="#5D7DBB"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:text="생성자: 홍길동"
+            android:textColor="#5D7DBB"
+            android:textSize="14sp" />
 
-        <!-- 버튼 오른쪽 정렬 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +63,8 @@
                 android:layout_height="match_parent"
                 android:backgroundTint="#247CFF"
                 android:letterSpacing="0.02"
-                android:paddingHorizontal="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:text="입장하기"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />

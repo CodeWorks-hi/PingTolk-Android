@@ -85,4 +85,6 @@ public class RoomListActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "방 목록을 불러올 수 없습니다", Toast.LENGTH_SHORT).show());
     }
+
+
 }
