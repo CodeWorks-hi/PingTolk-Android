@@ -12,7 +12,9 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.PingTolk">
+        android:theme="@style/Theme.PingTolk"
+        android:name=".MyApplication"
+        >
 
         <!-- Firebase 메시지 수신 서비스 등록 -->
         <service
