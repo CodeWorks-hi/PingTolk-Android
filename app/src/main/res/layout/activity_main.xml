@@ -39,18 +39,6 @@
         android:textColorHint="#999999"
         android:layout_marginBottom="12dp"/>
 
-    <!-- 방 코드 입력 -->
-    <EditText
-        android:id="@+id/editFamilyCode"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="@string/hint_family_code"
-        android:background="@drawable/bg_edittext"
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#999999"
-        android:layout_marginBottom="12dp"/>
-
     <!-- 비밀번호 입력 -->
     <EditText
         android:id="@+id/editPassword"
