@@ -18,9 +18,12 @@
     <string name="btn_edit">수정</string>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <!-- 상단 타이틀 -->
     <string name="room_name">Ping Room</string>
 =======
+=======
+>>>>>>> Stashed changes
     <!-- 🏷️ 채팅 화면 텍스트 -->
     <string name="room_name">우리 가족</string>
 >>>>>>> Stashed changes

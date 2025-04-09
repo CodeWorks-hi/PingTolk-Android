@@ -36,6 +36,9 @@
 =======
         <activity android:name=".ChatActivity" />
         <activity android:name=".ProfileActivity" />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         <activity
             android:name=".MainActivity"
