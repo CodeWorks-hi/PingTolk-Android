@@ -46,7 +46,7 @@
     <string name="auto_reply_message_hint">Enter your auto reply message</string>
     <string name="auto_reply_time_start">Select Start Time</string>
     <string name="auto_reply_time_end">Select End Time</string>
-    <string name="auto_reply_sample">I&apos;m currently away. I&apos;ll get back to you later!</string>
+    <string name="auto_reply_sample">I\'m currently away. I\'ll get back to you later!</string>
 
 
     <!-- Sharing -->
