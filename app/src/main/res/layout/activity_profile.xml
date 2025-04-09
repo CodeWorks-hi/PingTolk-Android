@@ -25,6 +25,9 @@
             android:layout_alignParentStart="true"
             android:contentDescription="@string/btn_back" />
 
+
+
+
         <!--  타이틀 텍스트 -->
         <TextView
             android:layout_width="wrap_content"

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 🔹 방 코드 + 즐겨찾기 (오른쪽 정렬) -->
+        <!--  방 코드 + 즐겨찾기 (오른쪽 정렬) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:contentDescription="즐겨찾기 버튼" />
         </LinearLayout>
 
-        <!-- 🔸 생성자 정보 -->
+        <!--  생성자 정보 -->
         <TextView
             android:id="@+id/textCreatedBy"
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:textColor="#5D7DBB"
             android:textSize="14sp" />
 
-        <!-- 🔘 입장 버튼 -->
+        <!--  입장 버튼 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

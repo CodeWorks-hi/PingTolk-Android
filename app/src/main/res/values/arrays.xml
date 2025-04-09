@@ -1,0 +1,6 @@
+<resources>
+    <string-array name="sort_options">
+        <item>방 코드 순</item>
+        <item>최근 접속 순</item>
+    </string-array>
+</resources>

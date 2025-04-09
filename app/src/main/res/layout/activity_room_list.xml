@@ -36,23 +36,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Ping Room"
+            android:text="@string/room_name"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#247CFF" />
     </RelativeLayout>
+
+    <!--  필터 영역 -->
+    <LinearLayout
+        android:id="@+id/filterBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topBar"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
+
+        <CheckBox
+            android:id="@+id/checkFavoriteOnly"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/check_favorite_only"
+            android:textSize="14sp"
+            android:textColor="#444444" />
+
+        <Spinner
+            android:id="@+id/spinnerSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/sort_options"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
 
     <!--  채팅방 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerRooms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topBar"
+        android:layout_below="@id/filterBar"
         android:layout_above="@id/btnCreate"
         android:padding="8dp"
         android:clipToPadding="false" />
 
-    <!-- ➕ 방 만들기 버튼 (오른쪽 하단 고정) -->
+    <!-- ➕ 방 만들기 버튼 -->
     <Button
         android:id="@+id/btnCreate"
         android:layout_width="wrap_content"
@@ -60,7 +90,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        android:text="방 만들기"
+        android:text="@string/btn_create"
         android:textColor="#FFFFFF"
         android:backgroundTint="#247CFF"
         android:elevation="4dp" />
