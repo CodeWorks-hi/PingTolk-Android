@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerMessages = findViewById(R.id.recyclerMessages);
 
         textRoomCode.setText(familyCode);
-        textRoomName.setText("우리 가족");
+        textRoomName.setText("Ping Room");
 
         db = FirebaseFirestore.getInstance();
         chatRef = db.collection("rooms").document(familyCode).collection("messages");

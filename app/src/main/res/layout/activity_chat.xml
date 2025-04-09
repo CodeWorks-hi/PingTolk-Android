@@ -12,15 +12,17 @@
         android:background="#FFFFFF"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:elevation="2dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_back"
+            android:layout_width="32dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
+            android:contentDescription="뒤로가기"
+            android:src="@drawable/ic_arrow_back" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,7 +37,7 @@
                 android:text="@string/room_name"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:textColor="#000000" />
+                android:textColor="#247CFF" />
 
             <TextView
                 android:id="@+id/textRoomCode"
@@ -43,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/room_code"
                 android:textSize="12sp"
-                android:textColor="#888888" />
+                android:textColor="#666666" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -56,7 +58,7 @@
         android:padding="12dp"
         android:clipToPadding="false" />
 
-    <!-- 입력창 -->
+    <!-- 메시지 입력창 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,6 +74,8 @@
             android:layout_weight="1"
             android:hint="@string/hint_message"
             android:background="@drawable/bg_edittext"
+            android:textColor="#000000"
+            android:textColorHint="#AAAAAA"
             android:padding="12dp"
             android:textSize="14sp"/>
 

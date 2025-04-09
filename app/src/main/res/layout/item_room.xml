@@ -1,12 +1,11 @@
-<!-- res/layout/item_room.xml -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    card_view:cardElevation="4dp"
-    card_view:cardCornerRadius="12dp"
-    card_view:cardBackgroundColor="#FFFFFF">
+    card_view:cardElevation="6dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardBackgroundColor="#F6FAFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:text="Ping Room: CODE123"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:textColor="#2D2D2D" />
+            android:textColor="#247CFF" />
 
         <TextView
             android:id="@+id/textCreatedBy"
@@ -29,10 +28,11 @@
             android:layout_height="wrap_content"
             android:text="생성자: 홍길동"
             android:textSize="14sp"
-            android:textColor="#666666"
+            android:textColor="#5D7DBB"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp" />
 
+        <!-- 버튼 오른쪽 정렬 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,12 +41,13 @@
             <Button
                 android:id="@+id/btnEnterRoom"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="#247CFF"
+                android:letterSpacing="0.02"
+                android:paddingHorizontal="20dp"
                 android:text="입장하기"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#2D5BFF"
-                android:paddingHorizontal="16dp"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

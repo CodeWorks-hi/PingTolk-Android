@@ -16,11 +16,12 @@
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_back"
+            android:layout_width="32dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
+            android:contentDescription="뒤로가기"
+            android:src="@drawable/ic_arrow_back" />
 
         <TextView
             android:id="@+id/textRoomTitle"
@@ -29,8 +30,9 @@
             android:text="@string/room_name"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="#247CFF"
             android:layout_centerInParent="true"/>
+
 
         <!-- 공유 버튼 (오른쪽 끝) -->
         <ImageView
@@ -42,7 +44,7 @@
             android:layout_marginEnd="16dp"
             android:src="@drawable/share"
             android:background="@android:color/transparent"
-            android:contentDescription="공유" />
+            android:contentDescription="공유하기" />
 
     </RelativeLayout>
 
