@@ -41,8 +41,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
@@ -248,22 +250,27 @@ public class ChatActivity extends AppCompatActivity {
                 .addSnapshotListener((QuerySnapshot value, com.google.firebase.firestore.FirebaseFirestoreException error) -> {
                     if (value == null || error != null) return;
 
+                    List<Message> newMessages = new ArrayList<>();
                     for (DocumentChange change : value.getDocumentChanges()) {
                         if (change.getType() == DocumentChange.Type.ADDED) {
                             Message msg = change.getDocument().toObject(Message.class);
-
-                            // 날짜 구분선
-                            String msgDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-                                    .format(new Date(msg.getTimestamp()));
-                            if (!msgDate.equals(lastDate)) {
-                                messageList.add(Message.createDateSeparator(msg.getTimestamp()));
-                                lastDate = msgDate;
-                            }
-
-                            messageList.add(msg);
-                            adapter.notifyItemInserted(messageList.size() - 1);
-                            recyclerMessages.scrollToPosition(messageList.size() - 1);
+                            newMessages.add(msg);
                         }
+                    }
+
+                    // 정렬 수행 (timestamp 기준 오름차순)
+                    Collections.sort(newMessages, (a, b) -> Long.compare(a.getTimestamp(), b.getTimestamp()));
+
+                    for (Message msg : newMessages) {
+                        String msgDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+                                .format(new Date(msg.getTimestamp()));
+                        if (!msgDate.equals(lastDate)) {
+                            messageList.add(Message.createDateSeparator(msg.getTimestamp()));
+                            lastDate = msgDate;
+                        }
+                        messageList.add(msg);
+                        adapter.notifyItemInserted(messageList.size() - 1);
+                        recyclerMessages.scrollToPosition(messageList.size() - 1);
                     }
                 });
     }
