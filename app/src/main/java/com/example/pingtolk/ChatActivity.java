@@ -1,10 +1,14 @@
 package com.example.pingtolk;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -12,9 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,15 +35,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 public class ChatActivity extends AppCompatActivity {
-
-    private static final int REQUEST_IMAGE_PICK = 2001;
 
     TextView textRoomName, textRoomCode;
     EditText editMessage;
@@ -47,16 +55,17 @@ public class ChatActivity extends AppCompatActivity {
     MessageAdapter adapter;
     ArrayList<Message> messageList = new ArrayList<>();
 
-    String familyCode, nickname;
-    String profileUrl;
-
+    String familyCode, nickname, profileUrl;
     private String lastDate = "";
+
+    private final int REQUEST_PERMISSION = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // 초기화
         familyCode = getIntent().getStringExtra("familyCode");
         nickname = getIntent().getStringExtra("nickname");
 
@@ -78,34 +87,22 @@ public class ChatActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         chatRef = db.collection("rooms").document(familyCode).collection("messages");
 
-        // 입장 메시지
+        // 시스템 입장 메시지
         Message welcomeMsg = new Message("SYSTEM", nickname + "님이 입장하셨습니다", System.currentTimeMillis());
         welcomeMsg.setProfileImageUrl(null);
-        welcomeMsg.setType("text");
         chatRef.add(welcomeMsg);
 
-        // 메시지 리스트
+        // RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         recyclerMessages.setLayoutManager(layoutManager);
         adapter = new MessageAdapter(this, messageList, nickname);
         recyclerMessages.setAdapter(adapter);
 
+        // 메시지 실시간 수신
         listenForMessages();
 
-        // 텍스트 메시지 전송
-        btnSend.setOnClickListener(v -> {
-            String text = editMessage.getText().toString().trim();
-            if (!text.isEmpty()) {
-                Message msg = new Message(nickname, text, System.currentTimeMillis());
-                msg.setProfileImageUrl(profileUrl);
-                msg.setType("text");
-                chatRef.add(msg);
-                editMessage.setText("");
-            }
-        });
-
-        // 엔터키 전송
+        // 메시지 전송 (엔터)
         editMessage.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEND ||
                     (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
@@ -115,56 +112,84 @@ public class ChatActivity extends AppCompatActivity {
             return false;
         });
 
-        // 이미지 전송
-        btnImage.setOnClickListener(v -> openGallery());
+        // 메시지 전송 (버튼)
+        btnSend.setOnClickListener(v -> {
+            String text = editMessage.getText().toString().trim();
+            if (!text.isEmpty()) {
+                Message msg = new Message(nickname, text, System.currentTimeMillis());
+                msg.setProfileImageUrl(profileUrl);
+                chatRef.add(msg);
+                editMessage.setText("");
+            }
+        });
+
+        // 이미지 전송 버튼
+        btnImage.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_PERMISSION);
+            } else {
+                openImagePicker.launch("image/*");
+            }
+        });
 
         // 뒤로가기
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(ChatActivity.this, RoomListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            new Handler(getMainLooper()).postDelayed(this::finish, 100);
+            finish();
         });
     }
 
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_IMAGE_PICK);
-    }
+    // 이미지 선택기
+    private final ActivityResultLauncher<String> openImagePicker = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) {
+                    resizeAndUploadImage(uri);
+                }
+            });
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    // 이미지 리사이징 및 업로드
+    private void resizeAndUploadImage(Uri uri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            Bitmap original = BitmapFactory.decodeStream(inputStream);
 
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
-            Uri imageUri = data.getData();
-            if (imageUri != null) {
-                uploadImageToFirebase(imageUri);
-            }
+            // 리사이즈 (가로 800px 기준)
+            int targetWidth = 800;
+            int targetHeight = (int) ((double) original.getHeight() / original.getWidth() * targetWidth);
+            Bitmap resized = Bitmap.createScaledBitmap(original, targetWidth, targetHeight, true);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+            byte[] data = baos.toByteArray();
+
+            // 스토리지에 업로드
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            String fileName = "chat_images/" + System.currentTimeMillis() + ".jpg";
+            StorageReference imageRef = storageRef.child(fileName);
+
+            UploadTask uploadTask = imageRef.putBytes(data);
+            uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                Message imageMsg = new Message(nickname, null, System.currentTimeMillis());
+                imageMsg.setProfileImageUrl(profileUrl);
+                imageMsg.setImageUrl(downloadUri.toString());
+                chatRef.add(imageMsg);
+            })).addOnFailureListener(e -> {
+                Toast.makeText(this, getString(R.string.toast_upload_fail), Toast.LENGTH_SHORT).show();
+                Log.e("ChatActivity", "이미지 업로드 실패", e);
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, getString(R.string.toast_upload_fail), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void uploadImageToFirebase(Uri imageUri) {
-        StorageReference ref = FirebaseStorage.getInstance()
-                .getReference("chat_images/" + UUID.randomUUID());
-
-        ref.putFile(imageUri)
-                .addOnSuccessListener(task -> ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                    // 이미지 메시지 전송
-                    Message msg = new Message();
-                    msg.setSender(nickname);
-                    msg.setTimestamp(System.currentTimeMillis());
-                    msg.setProfileImageUrl(profileUrl);
-                    msg.setType("image");
-                    msg.setImageUrl(uri.toString());
-                    msg.setText(""); // 텍스트는 비워둠
-                    chatRef.add(msg);
-                }))
-                .addOnFailureListener(e ->
-                        Log.e("ChatActivity", "이미지 업로드 실패", e));
-    }
-
+    // 채팅 수신
     private void listenForMessages() {
         chatRef.orderBy("timestamp")
                 .addSnapshotListener((QuerySnapshot value, com.google.firebase.firestore.FirebaseFirestoreException error) -> {
@@ -174,7 +199,7 @@ public class ChatActivity extends AppCompatActivity {
                         if (change.getType() == DocumentChange.Type.ADDED) {
                             Message msg = change.getDocument().toObject(Message.class);
 
-                            // 날짜 구분선 추가
+                            // 날짜 구분선
                             String msgDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
                                     .format(new Date(msg.getTimestamp()));
                             if (!msgDate.equals(lastDate)) {

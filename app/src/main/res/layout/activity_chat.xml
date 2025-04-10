@@ -114,5 +114,6 @@
             android:src="@drawable/ic_image"
             android:scaleType="fitCenter" />
 
+
     </LinearLayout>
 </LinearLayout>
