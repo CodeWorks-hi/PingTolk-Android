@@ -41,10 +41,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textRoomName"
+                android:id="@+id/textRoomCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/room_name"
@@ -53,7 +54,7 @@
                 android:textColor="#247CFF" />
 
             <TextView
-                android:id="@+id/textRoomCode"
+                android:id="@+id/textRoomName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/room_code"
