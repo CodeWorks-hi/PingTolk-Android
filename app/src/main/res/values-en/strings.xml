@@ -12,7 +12,7 @@
     <string name="hint_message">Enter message</string>
 
     <!-- Buttons -->
-    <string name="btn_create">Create Room</string>
+
     <string name="btn_join">Join</string>
     <string name="btn_send">Send</string>
     <string name="btn_save">Save</string>
@@ -23,6 +23,7 @@
     <string name="btn_attach">Attach</string>
     <string name="btn_favorite">Favorite</string>
     <string name="btn_settings">Settings</string>
+    <string name="btn_button">Create button</string>
 
     <!-- Top Titles -->
     <string name="room_name">Ping Room</string>
@@ -81,7 +82,8 @@
     <string name="toast_saved">Saved successfully</string>
     <string name="toast_upload_fail">Failed to upload image</string>
     <string name="toast_permission_denied">Permission to access gallery is required</string>
-
+    <string name="check_entered_only">입장한 방만 보기</string>
+    <string name="btn_create">방 만들기</string>
 
     <!-- Privacy and help labels -->
     <string name="label_privacy">Privacy settings screen</string>

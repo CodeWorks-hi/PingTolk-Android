@@ -22,6 +22,7 @@
     <string name="btn_attach">파일 첨부</string>
     <string name="btn_favorite">즐겨찾기</string>
     <string name="btn_settings">설정</string>
+    <string name="btn_button">Create button</string>
 
     <!--  상단 타이틀 -->
     <string name="room_name">Ping Room</string>
@@ -69,6 +70,8 @@
     <string name="desc_profile_image">프로필 이미지</string>
     <string name="room_prefix">Ping Room: %1$s</string>
     <string name="label_created_by">생성자: %1$s</string>
+    <string name="check_entered_only">입장한 방만 보기</string>
+
 
 
 
