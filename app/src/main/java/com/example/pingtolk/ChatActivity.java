@@ -3,6 +3,7 @@ package com.example.pingtolk;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -107,11 +108,25 @@ public class ChatActivity extends AppCompatActivity {
 
         // 뒤로가기 버튼 클릭
         btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(ChatActivity.this, RoomListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+            Log.d("ChatActivity", "백버튼 클릭됨");
+
+            try {
+                // RoomListActivity로 이동
+                Intent intent = new Intent(ChatActivity.this, RoomListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+
+                // 화면 재전환 타이밍 조절
+                new android.os.Handler(getMainLooper()).postDelayed(() -> {
+                    Log.d("ChatActivity", "ChatActivity 종료");
+                    finish();
+                }, 100);  // 100ms 딜레이 후 안전 종료
+
+            } catch (Exception e) {
+                Log.e("ChatActivity", "백버튼 처리 중 오류 발생", e);
+            }
         });
+
     }
 
     private void listenForMessages() {

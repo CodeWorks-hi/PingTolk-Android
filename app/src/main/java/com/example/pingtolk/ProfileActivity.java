@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -34,12 +36,14 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView profileImage;
     private TextView textNickname;
     private Switch switchDarkMode, switchNotification;
-    private SharedPreferences prefs;
+    private Spinner spinnerLanguage;
 
+    private SharedPreferences prefs;
     private FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setLocale(); // 언어 설정 적용
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -51,10 +55,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         // 저장 버튼
         findViewById(R.id.btnSave).setOnClickListener(v ->
-                Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
         );
 
-        // 닉네임 수정
+        // 닉네임
         textNickname = findViewById(R.id.textNickname);
         findViewById(R.id.btnEdit).setOnClickListener(v -> {
             if (textNickname.getText().toString().equals("김민지")) {
@@ -64,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // 다크모드 설정
+        // 다크모드
         switchDarkMode = findViewById(R.id.switchDarkMode);
         boolean isDark = prefs.getBoolean("dark_mode", false);
         switchDarkMode.setChecked(isDark);
@@ -73,24 +77,20 @@ public class ProfileActivity extends AppCompatActivity {
             int mode = isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
             AppCompatDelegate.setDefaultNightMode(mode);
             prefs.edit().putBoolean("dark_mode", isChecked).apply();
-            recreate();
+            recreate(); // 현재 화면 재시작
         });
 
-        // 알림 설정 (토스트만)
+        // 알림 설정
         switchNotification = findViewById(R.id.switchNotification);
         switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            String msg = isChecked ? "알림이 켜졌습니다" : "알림이 꺼졌습니다";
+            String msg = isChecked ? getString(R.string.toast_notification_on) : getString(R.string.toast_notification_off);
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         });
 
-        // 프로필 이미지
+        // 프로필 이미지 설정
         profileImage = findViewById(R.id.profileImage);
-
-        // 저장된 이미지 URL 불러오기
         String savedUrl = prefs.getString("profile_image_url", null);
         if (savedUrl != null && !savedUrl.isEmpty()) {
-            Log.d("ProfileImage", "이미지 로드 시도: " + savedUrl);
-
             Glide.with(this)
                     .load(savedUrl)
                     .placeholder(R.drawable.ic_profile)
@@ -101,13 +101,33 @@ public class ProfileActivity extends AppCompatActivity {
 
         profileImage.setOnClickListener(v -> checkGalleryPermission());
 
+        // 언어 선택 스피너
+        spinnerLanguage = findViewById(R.id.spinnerLanguage);
+        String savedLang = prefs.getString("language", "ko");
+        spinnerLanguage.setSelection(savedLang.equals("ko") ? 0 : 1);
+
+        spinnerLanguage.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                String selectedLang = (position == 0) ? "ko" : "en";
+                if (!selectedLang.equals(prefs.getString("language", "ko"))) {
+                    prefs.edit().putString("language", selectedLang).apply();
+                    recreate(); // 언어 변경 적용
+                }
+            }
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        });
+
+        // 개인정보 및 도움말 클릭
         findViewById(R.id.layoutPrivacy).setOnClickListener(v ->
-                Toast.makeText(this, "개인정보 보호 설정 화면입니다", Toast.LENGTH_SHORT).show());
+                Toast.makeText(this, getString(R.string.label_privacy), Toast.LENGTH_SHORT).show());
 
         findViewById(R.id.layoutHelp).setOnClickListener(v ->
-                Toast.makeText(this, "도움말 화면입니다", Toast.LENGTH_SHORT).show());
+                Toast.makeText(this, getString(R.string.label_help), Toast.LENGTH_SHORT).show());
     }
 
+    // 갤러리 접근 권한 확인
     private void checkGalleryPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
@@ -124,12 +144,14 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    // 갤러리 열기
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
+    // 이미지 선택 결과 처리
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -142,6 +164,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    // 이미지 업로드
     private void uploadToFirebase(Uri imageUri) {
         StorageReference imageRef = storage.getReference()
                 .child("profile_images/" + UUID.randomUUID());
@@ -152,24 +175,32 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(taskSnapshot ->
                         imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                             String downloadUrl = uri.toString();
-
-                            Log.d("ProfileImage", "업로드 성공, URL: " + downloadUrl);
-
                             Glide.with(this)
                                     .load(downloadUrl)
                                     .placeholder(R.drawable.ic_profile)
                                     .error(R.drawable.ic_profile)
                                     .into(profileImage);
-
                             prefs.edit().putString("profile_image_url", downloadUrl).apply();
                         })
                 )
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.toast_upload_fail), Toast.LENGTH_SHORT).show();
                     Log.e("ProfileImage", "업로드 실패", e);
                 });
     }
 
+    // 언어 설정 적용
+    private void setLocale() {
+        String lang = getSharedPreferences("settings", MODE_PRIVATE).getString("language", "ko");
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+
+        android.content.res.Configuration config = getResources().getConfiguration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+
+    // 권한 요청 결과 처리
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -178,7 +209,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openGallery();
             } else {
-                Toast.makeText(this, "갤러리 접근 권한이 필요합니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.toast_permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -65,7 +65,26 @@
     <string name="nickname_sample">Minji Kim</string>
     <string name="label_language">Language</string>
     <string name="language_korean">Korean</string>
-    <string name="language_english">ㄷEnglish</string>
+    <string name="language_english">English</string>
     <string name="desc_profile_image">Profile image</string>
+    <string name="label_notification">Notification</string>
+    <string name="toast_notification_on">Notification turned on</string>
+    <string name="toast_notification_off">Notification turned off</string>
+    <string name="label_dark_mode">Dark mode</string>
+
+    <!-- Save toast -->
+    <string name="toast_saved">Saved successfully</string>
+    <string name="toast_upload_fail">Failed to upload image</string>
+    <string name="toast_permission_denied">Permission to access gallery is required</string>
+
+
+    <!-- Privacy and help labels -->
+    <string name="label_privacy">Privacy settings screen</string>
+    <string name="label_help">Help screen</string>
+    <string-array name="language_options">
+        <item>한국어</item>
+        <item>English</item>
+    </string-array>
+
 
 </resources>
