@@ -138,7 +138,16 @@ public class ChatActivity extends AppCompatActivity {
             if (!text.isEmpty()) {
                 Message msg = new Message(nickname, text, System.currentTimeMillis());
                 msg.setProfileImageUrl(profileUrl);
-                chatRef.add(msg);
+                msg.setImage(false);
+                HashMap<String, Object> msgMap = new HashMap<>();
+                msgMap.put("sender", msg.getSender());
+                msgMap.put("text", msg.getText());
+                msgMap.put("timestamp", msg.getTimestamp());
+                msgMap.put("profileImageUrl", msg.getProfileImageUrl());
+                msgMap.put("isImage", false);
+                msgMap.put("imageUrl", null);
+                msgMap.put("isDateSeparator", false);
+                chatRef.add(msgMap);
                 editMessage.setText("");
             }
         });
@@ -210,7 +219,18 @@ public class ChatActivity extends AppCompatActivity {
                 Message imageMsg = new Message(nickname, null, System.currentTimeMillis());
                 imageMsg.setProfileImageUrl(profileUrl);
                 imageMsg.setImageUrl(downloadUri.toString());
-                chatRef.add(imageMsg);
+                imageMsg.setImage(true);
+
+                HashMap<String, Object> msgMap = new HashMap<>();
+                msgMap.put("sender", imageMsg.getSender());
+                msgMap.put("text", "");
+                msgMap.put("timestamp", imageMsg.getTimestamp());
+                msgMap.put("profileImageUrl", imageMsg.getProfileImageUrl());
+                msgMap.put("isImage", true);
+                msgMap.put("imageUrl", imageMsg.getImageUrl());
+                msgMap.put("isDateSeparator", false);
+
+                chatRef.add(msgMap);
             })).addOnFailureListener(e -> {
                 Toast.makeText(this, getString(R.string.toast_upload_fail), Toast.LENGTH_SHORT).show();
                 Log.e("ChatActivity", "이미지 업로드 실패", e);

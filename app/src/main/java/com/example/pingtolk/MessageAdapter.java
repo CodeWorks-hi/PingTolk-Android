@@ -62,30 +62,32 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.textSender.setText(msg.getSender());
         holder.textTime.setText(getTime(msg.getTimestamp()));
 
-        // 메시지 타입 확인
-        if (msg.getImageUrl() != null && !msg.getImageUrl().isEmpty()) {
-            // 이미지 메시지
+        String imageUrl = msg.getImageUrl();
+        String text = msg.getText();
+
+        boolean isImage = imageUrl != null && !imageUrl.isEmpty();
+
+        if (isImage) {
             if (holder.imageView != null) {
                 holder.imageView.setVisibility(View.VISIBLE);
                 holder.textMessage.setVisibility(View.GONE);
 
                 Glide.with(context)
-                        .load(msg.getImageUrl())
+                        .load(imageUrl)
                         .into(holder.imageView);
             }
         } else {
-            // 일반 텍스트 메시지
             holder.textMessage.setVisibility(View.VISIBLE);
             holder.imageView.setVisibility(View.GONE);
-            holder.textMessage.setText(msg.getText());
+            holder.textMessage.setText(text);
         }
 
         // 프로필 이미지 표시 (상대방)
         if (getItemViewType(position) == 1 && holder.imageProfile != null) {
-            String imageUrl = msg.getProfileImageUrl();
-            if (imageUrl != null && !imageUrl.isEmpty()) {
+            String imageUrlProfile = msg.getProfileImageUrl();
+            if (imageUrlProfile != null && !imageUrlProfile.isEmpty()) {
                 Glide.with(context)
-                        .load(imageUrl)
+                        .load(imageUrlProfile)
                         .placeholder(R.drawable.ic_profile)
                         .into(holder.imageProfile);
             } else {

@@ -82,6 +82,16 @@
         android:background="#FFFFFF"
         android:elevation="4dp">
 
+        <ImageButton
+            android:id="@+id/btnImage"
+            android:layout_width="43dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_image"
+            android:padding="8dp"
+            android:src="@drawable/ic_image"
+            android:scaleType="fitCenter" />
+
         <EditText
             android:id="@+id/editMessage"
             android:layout_width="0dp"
@@ -104,16 +114,6 @@
             android:rotation="-40"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_send" />
-
-        <ImageButton
-            android:id="@+id/btnImage"
-            android:layout_width="43dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/btn_image"
-            android:padding="8dp"
-            android:src="@drawable/ic_image"
-            android:scaleType="fitCenter" />
 
 
     </LinearLayout>

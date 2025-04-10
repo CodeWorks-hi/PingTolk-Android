@@ -97,7 +97,7 @@ public class RoomListActivity extends AppCompatActivity {
                     return;
                 }
 
-                String newCode = title.replaceAll("\\s+", "_");  // 방 이름 기반 문서 ID
+                String newCode = title.replaceAll("[/#.$\\[\\]\\s]+", "_"); // Firebase-safe ID
                 Map<String, Object> roomData = new HashMap<>();
                 roomData.put("created_by", nickname);
                 roomData.put("created_at", new Date());
