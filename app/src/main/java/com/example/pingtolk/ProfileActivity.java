@@ -159,6 +159,10 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
+                // 1) 선택 즉시 이미지 미리보기 표시
+                profileImage.setImageURI(selectedImageUri);
+
+                // 2) 이후 Firebase Storage에 업로드
                 uploadToFirebase(selectedImageUri);
             }
         }
