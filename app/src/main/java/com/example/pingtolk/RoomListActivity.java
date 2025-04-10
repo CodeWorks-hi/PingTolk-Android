@@ -24,6 +24,7 @@ public class RoomListActivity extends AppCompatActivity {
     List<Map<String, Object>> filteredList = new ArrayList<>();
     Set<String> favoriteCodes = new HashSet<>();
     String nickname;
+    SharedPreferences enterPrefs;
 
     ImageView btnBack, btnSettings;
     Button btnCreate;
@@ -96,7 +97,7 @@ public class RoomListActivity extends AppCompatActivity {
                     return;
                 }
 
-                String newCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+                String newCode = title.replaceAll("\\s+", "_");  // 방 이름 기반 문서 ID
                 Map<String, Object> roomData = new HashMap<>();
                 roomData.put("created_by", nickname);
                 roomData.put("created_at", new Date());
@@ -128,10 +129,20 @@ public class RoomListActivity extends AppCompatActivity {
         // RecyclerView 설정
         recyclerView = findViewById(R.id.recyclerRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        enterPrefs = getSharedPreferences("EnteredRooms", MODE_PRIVATE);
         adapter = new RoomListAdapter(filteredList, room -> {
             String familyCode = (String) room.get("code");
             String title = (String) room.get("title");
             String correctPassword = (String) room.get("password");
+
+            if (enterPrefs.contains(familyCode)) {
+                Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
+                intent.putExtra("familyCode", familyCode);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("roomName", title);
+                startActivity(intent);
+                return;
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(RoomListActivity.this);
             builder.setTitle("비밀번호 입력");
@@ -143,6 +154,7 @@ public class RoomListActivity extends AppCompatActivity {
             builder.setPositiveButton("입장", (dialog, which) -> {
                 String enteredPassword = input.getText().toString();
                 if (enteredPassword.equals(correctPassword)) {
+                    enterPrefs.edit().putBoolean(familyCode, true).apply();
                     Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
                     intent.putExtra("familyCode", familyCode);
                     intent.putExtra("nickname", nickname);
