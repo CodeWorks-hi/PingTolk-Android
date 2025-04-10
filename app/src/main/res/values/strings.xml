@@ -23,6 +23,8 @@
     <string name="btn_favorite">즐겨찾기</string>
     <string name="btn_settings">설정</string>
     <string name="btn_button">Create button</string>
+    <string name="btn_menu">메뉴</string>
+    <string name="btn_logout">로그아웃</string>
 
     <!--  상단 타이틀 -->
     <string name="room_name">Ping Room</string>
@@ -71,6 +73,10 @@
     <string name="room_prefix">Ping Room: %1$s</string>
     <string name="label_created_by">생성자: %1$s</string>
     <string name="check_entered_only">입장한 방만 보기</string>
+    <string name="text_members_title">참여 중인 멤버</string>
+    <string name="menu_chat_info">Chat Info</string>
+    <string name="menu_logout">Leave Room</string>
+
 
 
 
@@ -97,6 +103,7 @@
     <string name="label_privacy">개인정보 보호 설정 화면입니다</string>
     <string name="label_help">도움말 화면입니다</string>
     <string name="label_notification">알림</string>
+
 
 
 

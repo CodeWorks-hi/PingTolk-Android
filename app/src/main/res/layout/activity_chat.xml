@@ -16,6 +16,18 @@
         android:elevation="2dp">
 
 
+        <!-- 채팅 메뉴 버튼 (왼쪽 끝) -->
+        <ImageView
+            android:id="@+id/btnChatMenu"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toStartOf="@id/btnShareRoom"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_menu"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_menu" />
+
         <!-- 공유 버튼 (오른쪽 끝) -->
         <ImageView
             android:id="@+id/btnShareRoom"

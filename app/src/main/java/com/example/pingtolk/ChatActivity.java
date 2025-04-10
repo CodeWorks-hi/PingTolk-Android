@@ -13,22 +13,31 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -85,7 +94,6 @@ public class ChatActivity extends AppCompatActivity {
         btnImage = findViewById(R.id.btnImage);
         btnBack = findViewById(R.id.btnBack);
         recyclerMessages = findViewById(R.id.recyclerMessages);
-
 
         textRoomName.setText(R.string.room_name);
         String roomCode = getIntent().getStringExtra("roomName");
@@ -172,6 +180,9 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        ImageView btnChatMenu = findViewById(R.id.btnChatMenu);
+        btnChatMenu.setOnClickListener(v -> showChatInfoDialog());
     }
 
     // 이미지 선택기
@@ -273,5 +284,80 @@ public class ChatActivity extends AppCompatActivity {
                         recyclerMessages.scrollToPosition(messageList.size() - 1);
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        nickname = prefs.getString("nickname", nickname); // fallback to old nickname if not found
+        profileUrl = prefs.getString("profile_image_url", profileUrl);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.chat_menu, menu); // chat_menu.xml should be created in res/menu
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_chat_info) {
+            // Open a bottom sheet or dialog with profile info, members, and "Leave Room" button
+            showChatInfoDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showChatInfoDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_chat_info, null);
+
+        ImageView imageProfile = view.findViewById(R.id.imageProfile);
+        TextView textNickname = view.findViewById(R.id.textNickname);
+        RecyclerView recyclerMembers = view.findViewById(R.id.recyclerMembers);
+        recyclerMembers.setLayoutManager(new LinearLayoutManager(this));
+        Button btnLeaveRoom = view.findViewById(R.id.btnLeaveRoom);
+
+        // 내 프로필 표시
+        textNickname.setText(nickname);
+        if (profileUrl != null && !profileUrl.isEmpty()) {
+            Glide.with(this).load(profileUrl).circleCrop().into(imageProfile);
+        }
+
+        // 참여 중인 멤버 목록 표시
+        db.collection("rooms").document(familyCode)
+                .collection("enteredUsers")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<String> memberNames = new ArrayList<>();
+                    for (var doc : querySnapshot) {
+                        memberNames.add(doc.getId());
+                    }
+                    ChatInfoAdapter adapter = new ChatInfoAdapter(memberNames);
+                    recyclerMembers.setAdapter(adapter);
+                });
+
+        // 방 나가기
+        btnLeaveRoom.setOnClickListener(v -> {
+            db.collection("rooms").document(familyCode)
+                    .collection("enteredUsers")
+                    .document(nickname)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, getString(R.string.menu_logout), Toast.LENGTH_SHORT).show();
+                        finish(); // 채팅방 종료
+                    });
+        });
+
+        ImageView btnBack = view.findViewById(R.id.btnBack);
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .setNegativeButton("닫기", (dialog, which) -> dialog.dismiss())
+                .create();
+        // Back button to close the dialog and return to ChatActivity
+        btnBack.setOnClickListener(v -> alertDialog.dismiss());
+        alertDialog.show();
     }
 }

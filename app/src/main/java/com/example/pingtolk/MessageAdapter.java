@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Locale;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
 
@@ -79,8 +78,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                 Glide.with(context)
                         .load(msg.getImageUrl())
-                        .circleCrop()
-                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(30)))  // 원하는 둥근 정도(px)
+                        .transform(new CenterCrop(), new RoundedCorners(30))
                         .into(holder.imageView);
             }
         } else {

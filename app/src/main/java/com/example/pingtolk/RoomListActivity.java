@@ -24,6 +24,7 @@ public class RoomListActivity extends AppCompatActivity {
     List<Map<String, Object>> filteredList = new ArrayList<>();
     Set<String> favoriteCodes = new HashSet<>();
     String nickname;
+    String profileUrl;
     SharedPreferences enterPrefs;
 
     ImageView btnBack, btnSettings;
@@ -37,7 +38,8 @@ public class RoomListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_list);
 
         SharedPreferences prefs = getSharedPreferences("PingTalkPrefs", MODE_PRIVATE);
-        nickname = prefs.getString("nickname", null);
+        nickname = prefs.getString("nickname", "알 수 없음");
+        profileUrl = prefs.getString("profile_image_url", null);
         if (nickname == null || nickname.isEmpty()) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -115,6 +117,7 @@ public class RoomListActivity extends AppCompatActivity {
                             Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
                             intent.putExtra("familyCode", newCode);
                             intent.putExtra("nickname", nickname);
+                            intent.putExtra("profileUrl", profileUrl);
                             intent.putExtra("roomName", title);
                             startActivity(intent);
                         })
@@ -139,6 +142,7 @@ public class RoomListActivity extends AppCompatActivity {
                 Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
                 intent.putExtra("familyCode", familyCode);
                 intent.putExtra("nickname", nickname);
+                intent.putExtra("profileUrl", profileUrl);
                 intent.putExtra("roomName", title);
                 startActivity(intent);
                 return;
@@ -158,6 +162,7 @@ public class RoomListActivity extends AppCompatActivity {
                     Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
                     intent.putExtra("familyCode", familyCode);
                     intent.putExtra("nickname", nickname);
+                    intent.putExtra("profileUrl", profileUrl);
                     intent.putExtra("roomName", title);
                     startActivity(intent);
                 } else {

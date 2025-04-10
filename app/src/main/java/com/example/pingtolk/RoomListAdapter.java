@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,13 +73,15 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
                     .document(code);
 
             if (nowFavorite) {
-                favRef.delete();
-                holder.btnFavorite.setImageResource(R.drawable.ic_star_outline);
-                holder.btnFavorite.setTag(false);
+                favRef.delete().addOnSuccessListener(aVoid -> {
+                    holder.btnFavorite.setImageResource(R.drawable.ic_star_outline);
+                    holder.btnFavorite.setTag(false);
+                });
             } else {
-                favRef.set(new HashMap<>());
-                holder.btnFavorite.setImageResource(R.drawable.ic_star_filled);
-                holder.btnFavorite.setTag(true);
+                favRef.set(new HashMap<>()).addOnSuccessListener(aVoid -> {
+                    holder.btnFavorite.setImageResource(R.drawable.ic_star_filled);
+                    holder.btnFavorite.setTag(true);
+                });
             }
         });
     }

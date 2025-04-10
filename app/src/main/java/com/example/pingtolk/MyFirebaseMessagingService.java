@@ -84,7 +84,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_chat_logo) // 앱 로고 또는 아이콘
                 .setContentTitle(title)
                 .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setNumber(1); // 숫자 뱃지 표시 (지원하는 런처에서만 표시됨)
 
         NotificationManagerCompat.from(this).notify(1, builder.build());
     }

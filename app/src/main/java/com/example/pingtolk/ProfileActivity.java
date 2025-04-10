@@ -58,8 +58,9 @@ public class ProfileActivity extends AppCompatActivity {
         // 저장 버튼
         findViewById(R.id.btnSave).setOnClickListener(v -> {
             String nickname = textNickname.getText().toString();
-            prefs.edit().putString("nickname", nickname).apply(); // ✅ 닉네임 저장
+            prefs.edit().putString("nickname", nickname).apply();
             Toast.makeText(this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);  // 결과 설정
         });
 
         // 닉네임
@@ -80,8 +81,8 @@ public class ProfileActivity extends AppCompatActivity {
                 String newNickname = input.getText().toString().trim();
                 if (!newNickname.isEmpty()) {
                     textNickname.setText(newNickname);
-                    // 필요하다면 SharedPreferences에도 저장
                     prefs.edit().putString("nickname", newNickname).apply();
+                    Toast.makeText(ProfileActivity.this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show();
                 }
             });
 
