@@ -6,16 +6,24 @@ public class Message {
     private long timestamp;
     private boolean isDateSeparator;
 
+    // ✅ 프로필 이미지 URL
+    private String profileImageUrl;
+
+    // ✅ 이미지 전송 기능을 위한 추가 필드
+    private String type;     // "text" 또는 "image"
+    private String imageUrl; // 이미지 전송용 Firebase Storage URL
+
     // ✅ 기본 생성자 (Firestore에서 필요)
     public Message() {
     }
 
-    // ✅ 일반 메시지 생성자
+    // ✅ 일반 텍스트 메시지 생성자
     public Message(String sender, String text, long timestamp) {
         this.sender = sender;
         this.text = text;
         this.timestamp = timestamp;
         this.isDateSeparator = false;
+        this.type = "text"; // 기본값은 텍스트 메시지
     }
 
     // ✅ 날짜 구분용 메시지 생성자
@@ -61,15 +69,27 @@ public class Message {
         isDateSeparator = dateSeparator;
     }
 
-    // 기존 필드 아래에 추가
-    private String profileImageUrl; // 발신자의 프로필 이미지 URL
-
-    // Getter/Setter 추가
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

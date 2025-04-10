@@ -29,7 +29,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         this.currentUser = currentUser;
     }
 
-    // 뷰타입 결정 (내 메시지 = 0, 상대방 메시지 = 1, 날짜 구분선 = 2)
     @Override
     public int getItemViewType(int position) {
         Message msg = messageList.get(position);
@@ -61,10 +60,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
 
         holder.textSender.setText(msg.getSender());
-        holder.textMessage.setText(msg.getText());
         holder.textTime.setText(getTime(msg.getTimestamp()));
 
-        // 상대방 메시지에만 프로필 이미지 표시
+        if (msg.getType() != null && msg.getType().equals("image")) {
+            // 이미지 메시지 처리
+            if (holder.imageView != null && msg.getImageUrl() != null) {
+                holder.textMessage.setVisibility(View.GONE);
+                holder.imageView.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(msg.getImageUrl())
+                        .into(holder.imageView);
+            }
+        } else {
+            // 일반 텍스트 메시지
+            holder.textMessage.setVisibility(View.VISIBLE);
+            holder.imageView.setVisibility(View.GONE);
+            holder.textMessage.setText(msg.getText());
+        }
+
+        // 상대방 메시지일 경우 프로필 이미지 표시
         if (getItemViewType(position) == 1 && holder.imageProfile != null) {
             String imageUrl = msg.getProfileImageUrl();
             if (imageUrl != null && !imageUrl.isEmpty()) {
@@ -95,27 +109,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView textSender, textMessage, textTime, textDate;
-        ImageView imageProfile;
+        ImageView imageProfile, imageView;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // 안전한 뷰 연결
-            if (itemView.findViewById(R.id.textSender) != null) {
+            if (itemView.findViewById(R.id.textSender) != null)
                 textSender = itemView.findViewById(R.id.textSender);
-            }
-            if (itemView.findViewById(R.id.textMessage) != null) {
+            if (itemView.findViewById(R.id.textMessage) != null)
                 textMessage = itemView.findViewById(R.id.textMessage);
-            }
-            if (itemView.findViewById(R.id.textTime) != null) {
+            if (itemView.findViewById(R.id.textTime) != null)
                 textTime = itemView.findViewById(R.id.textTime);
-            }
-            if (itemView.findViewById(R.id.textDate) != null) {
+            if (itemView.findViewById(R.id.textDate) != null)
                 textDate = itemView.findViewById(R.id.textDate);
-            }
-            if (itemView.findViewById(R.id.imageProfile) != null) {
+            if (itemView.findViewById(R.id.imageProfile) != null)
                 imageProfile = itemView.findViewById(R.id.imageProfile);
-            }
+            if (itemView.findViewById(R.id.imageMessage) != null)
+                imageView = itemView.findViewById(R.id.imageMessage);
         }
     }
 }

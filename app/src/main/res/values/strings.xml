@@ -47,6 +47,8 @@
     <string name="auto_reply_time_start">시작 시간 선택</string>
     <string name="auto_reply_time_end">종료 시간 선택</string>
     <string name="auto_reply_sample">지금은 자리에 없습니다. 나중에 연락드릴게요!</string>
+    <string name="btn_image">이미지 전송</string>
+
 
     <!--  공유 텍스트 -->
     <string name="share_invite_title">PingTalk 채팅방 초대</string>
@@ -65,6 +67,7 @@
     <string name="language_korean">한국어</string>
     <string name="language_english">영어</string>
     <string name="desc_profile_image">프로필 이미지</string>
+
 
     <!--  시스템설정 -->
     <string-array name="language_options">

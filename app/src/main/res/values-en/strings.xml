@@ -29,11 +29,13 @@
     <string name="room_code">FAMILY123</string>
     <string name="room_list_title">Chat Room List</string>
 
+
     <!-- Chat UI -->
     <string name="text_sender">Sender</string>
     <string name="message_hint">Enter message</string>
     <string name="auto_reply_prefix">[Auto Reply]</string>
     <string name="urgent_mark">[Urgent]</string>
+    <string name="btn_image">Send Image</string>
 
     <!-- Sample Messages -->
     <string name="sample_time">6:30 PM</string>
