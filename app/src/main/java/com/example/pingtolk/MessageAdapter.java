@@ -16,6 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
@@ -73,7 +78,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.textMessage.setVisibility(View.GONE);
 
                 Glide.with(context)
-                        .load(imageUrl)
+                        .load(msg.getImageUrl())
+                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(30)))  // 원하는 둥근 정도(px)
                         .into(holder.imageView);
             }
         } else {
@@ -88,6 +94,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if (imageUrlProfile != null && !imageUrlProfile.isEmpty()) {
                 Glide.with(context)
                         .load(imageUrlProfile)
+                        .transform(new RoundedCorners(30))
                         .placeholder(R.drawable.ic_profile)
                         .into(holder.imageProfile);
             } else {

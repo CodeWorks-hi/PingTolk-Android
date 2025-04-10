@@ -49,8 +49,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0") // 버전은 네 프로젝트에 맞춰서
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
+    // transform 기능 쓰려면 이거도 추가
+    implementation("jp.wasabeef:glide-transformations:4.3.0")
 
     // Firebase Storage
     implementation("com.google.firebase:firebase-storage:20.2.1")
