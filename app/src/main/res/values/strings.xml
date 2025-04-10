@@ -67,6 +67,10 @@
     <string name="language_korean">한국어</string>
     <string name="language_english">영어</string>
     <string name="desc_profile_image">프로필 이미지</string>
+    <string name="room_prefix">Ping Room: %1$s</string>
+    <string name="label_created_by">생성자: %1$s</string>
+
+
 
 
     <!--  시스템설정 -->

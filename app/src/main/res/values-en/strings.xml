@@ -28,6 +28,9 @@
     <string name="room_name">Ping Room</string>
     <string name="room_code">FAMILY123</string>
     <string name="room_list_title">Chat Room List</string>
+    <string name="room_prefix">Ping Room: %1$s</string>
+    <string name="label_created_by">Created by: %1$s</string>
+
 
 
     <!-- Chat UI -->
