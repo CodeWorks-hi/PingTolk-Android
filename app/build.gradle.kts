@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application) // Version Catalog용
-    id("com.google.gms.google-services")    // ✅ Firebase 서비스 연동용 플러그인
+    id("com.google.gms.google-services")    // Firebase 서비스 연동용 플러그인
 }
 
 android {
@@ -45,10 +45,17 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // ✅ Firebase BoM (Bill of Materials)
+    // Firebase BoM (Bill of Materials)
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
-    // ✅ 사용 Firebase SDK (예: Analytics + Auth + Firestore 등)
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+
+    // Firebase Storage
+    implementation("com.google.firebase:firebase-storage:20.2.1")
+
+    // 사용 Firebase SDK (예: Analytics + Auth + Firestore 등)
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")

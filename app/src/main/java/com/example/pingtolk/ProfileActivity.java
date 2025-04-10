@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -16,6 +17,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.UUID;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -27,13 +36,15 @@ public class ProfileActivity extends AppCompatActivity {
     private Switch switchDarkMode, switchNotification;
     private SharedPreferences prefs;
 
+    private FirebaseStorage storage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // SharedPreferences 선언
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        storage = FirebaseStorage.getInstance();
 
         // 뒤로가기 버튼
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
@@ -43,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show()
         );
 
-        // 닉네임 수정 버튼
+        // 닉네임 수정
         textNickname = findViewById(R.id.textNickname);
         findViewById(R.id.btnEdit).setOnClickListener(v -> {
             if (textNickname.getText().toString().equals("김민지")) {
@@ -53,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // 다크모드 스위치
+        // 다크모드 설정
         switchDarkMode = findViewById(R.id.switchDarkMode);
         boolean isDark = prefs.getBoolean("dark_mode", false);
         switchDarkMode.setChecked(isDark);
@@ -61,14 +72,11 @@ public class ProfileActivity extends AppCompatActivity {
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             int mode = isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
             AppCompatDelegate.setDefaultNightMode(mode);
-
             prefs.edit().putBoolean("dark_mode", isChecked).apply();
-
-            // 현재 화면만 재시작 (앱 전체 재시작 아님)
             recreate();
         });
 
-        // 알림 스위치
+        // 알림 설정 (토스트만)
         switchNotification = findViewById(R.id.switchNotification);
         switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String msg = isChecked ? "알림이 켜졌습니다" : "알림이 꺼졌습니다";
@@ -77,17 +85,27 @@ public class ProfileActivity extends AppCompatActivity {
 
         // 프로필 이미지
         profileImage = findViewById(R.id.profileImage);
+
+        // 저장된 이미지 URL 불러오기
+        String savedUrl = prefs.getString("profile_image_url", null);
+        if (savedUrl != null && !savedUrl.isEmpty()) {
+            Log.d("ProfileImage", "이미지 로드 시도: " + savedUrl);
+
+            Glide.with(this)
+                    .load(savedUrl)
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(profileImage);
+        }
+
         profileImage.setOnClickListener(v -> checkGalleryPermission());
 
-        // 개인정보 보호
         findViewById(R.id.layoutPrivacy).setOnClickListener(v ->
-                Toast.makeText(this, "개인정보 보호 설정 화면입니다", Toast.LENGTH_SHORT).show()
-        );
+                Toast.makeText(this, "개인정보 보호 설정 화면입니다", Toast.LENGTH_SHORT).show());
 
-        // 도움말
         findViewById(R.id.layoutHelp).setOnClickListener(v ->
-                Toast.makeText(this, "도움말 화면입니다", Toast.LENGTH_SHORT).show()
-        );
+                Toast.makeText(this, "도움말 화면입니다", Toast.LENGTH_SHORT).show());
     }
 
     private void checkGalleryPermission() {
@@ -119,9 +137,37 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
-                profileImage.setImageURI(selectedImageUri);
+                uploadToFirebase(selectedImageUri);
             }
         }
+    }
+
+    private void uploadToFirebase(Uri imageUri) {
+        StorageReference imageRef = storage.getReference()
+                .child("profile_images/" + UUID.randomUUID());
+
+        UploadTask uploadTask = imageRef.putFile(imageUri);
+
+        uploadTask
+                .addOnSuccessListener(taskSnapshot ->
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String downloadUrl = uri.toString();
+
+                            Log.d("ProfileImage", "업로드 성공, URL: " + downloadUrl);
+
+                            Glide.with(this)
+                                    .load(downloadUrl)
+                                    .placeholder(R.drawable.ic_profile)
+                                    .error(R.drawable.ic_profile)
+                                    .into(profileImage);
+
+                            prefs.edit().putString("profile_image_url", downloadUrl).apply();
+                        })
+                )
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("ProfileImage", "업로드 실패", e);
+                });
     }
 
     @Override

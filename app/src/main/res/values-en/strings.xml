@@ -1,6 +1,7 @@
 <resources>
 
     <!-- App Info -->
+
     <string name="app_name">PingTolk</string>
     <string name="app_subtitle">Private chat for your family</string>
 
@@ -64,5 +65,7 @@
     <string name="nickname_sample">Minji Kim</string>
     <string name="label_language">Language</string>
     <string name="language_korean">Korean</string>
+    <string name="language_english">ㄷEnglish</string>
+    <string name="desc_profile_image">Profile image</string>
 
 </resources>

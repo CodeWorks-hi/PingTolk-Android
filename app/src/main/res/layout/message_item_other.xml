@@ -1,38 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 전체 구조: 수평 정렬 (왼쪽 이미지 + 오른쪽 말풍선) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="start"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="start">
 
-    <TextView
-        android:id="@+id/textSender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sample_other_sender"
-        android:textColor="#888888"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+    <!-- 프로필 이미지 -->
+    <ImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        android:background="@drawable/bg_profile_round"
+        android:contentDescription="@string/desc_profile_image"/>
 
-    <TextView
-        android:id="@+id/textMessage"
-        android:layout_width="wrap_content"
-        android:maxWidth="240dp"
+    <!-- 말풍선 내용 묶음 (수직) -->
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_message_other"
-        android:padding="12dp"
-        android:text="@string/sample_other_msg"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <!-- 새로 추가: 시간 표시 -->
-    <TextView
-        android:id="@+id/textTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sample_time"
-        android:textSize="12sp"
-        android:textColor="#AAAAAA"
-        android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/textSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_other_sender"
+            android:textColor="#888888"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textMessage"
+            android:layout_width="wrap_content"
+            android:maxWidth="240dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_message_other"
+            android:padding="12dp"
+            android:text="@string/sample_other_msg"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_time"
+            android:textSize="12sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
 </LinearLayout>

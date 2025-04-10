@@ -7,16 +7,19 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--권한추가 -->
+   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+   <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
-    <application
-        android:allowBackup="true"
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.PingTolk"
-        android:name=".MyApplication"
-        >
+   <application
+       android:allowBackup="true"
+       android:label="@string/app_name"
+       android:icon="@mipmap/ic_launcher"
+       android:theme="@style/Theme.PingTolk"
+       android:name=".MyApplication"
+       >
 
-        <!-- Firebase 메시지 수신 서비스 등록 -->
+       <!-- Firebase 메시지 수신 서비스 등록 -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

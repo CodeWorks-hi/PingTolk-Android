@@ -60,4 +60,16 @@ public class Message {
     public void setDateSeparator(boolean dateSeparator) {
         isDateSeparator = dateSeparator;
     }
+
+    // 기존 필드 아래에 추가
+    private String profileImageUrl; // 발신자의 프로필 이미지 URL
+
+    // Getter/Setter 추가
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }
