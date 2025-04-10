@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -158,10 +160,23 @@ public class ChatActivity extends AppCompatActivity {
             InputStream inputStream = getContentResolver().openInputStream(uri);
             Bitmap original = BitmapFactory.decodeStream(inputStream);
 
-            // 리사이즈 (가로 800px 기준)
-            int targetWidth = 800;
-            int targetHeight = (int) ((double) original.getHeight() / original.getWidth() * targetWidth);
-            Bitmap resized = Bitmap.createScaledBitmap(original, targetWidth, targetHeight, true);
+            int canvasSize = 800;
+            Bitmap output = Bitmap.createBitmap(canvasSize, canvasSize, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
+            canvas.drawColor(Color.DKGRAY); // dark background
+
+            int originalWidth = original.getWidth();
+            int originalHeight = original.getHeight();
+            float scale = Math.min((float) canvasSize / originalWidth, (float) canvasSize / originalHeight);
+            int scaledWidth = Math.round(originalWidth * scale);
+            int scaledHeight = Math.round(originalHeight * scale);
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(original, scaledWidth, scaledHeight, true);
+
+            int left = (canvasSize - scaledWidth) / 2;
+            int top = (canvasSize - scaledHeight) / 2;
+            canvas.drawBitmap(scaledBitmap, left, top, null);
+
+            Bitmap resized = output;
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             resized.compress(Bitmap.CompressFormat.JPEG, 70, baos);
