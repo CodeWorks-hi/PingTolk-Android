@@ -79,6 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                 Glide.with(context)
                         .load(msg.getImageUrl())
+                        .circleCrop()
                         .apply(RequestOptions.bitmapTransform(new RoundedCorners(30)))  // 원하는 둥근 정도(px)
                         .into(holder.imageView);
             }
@@ -94,7 +95,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if (imageUrlProfile != null && !imageUrlProfile.isEmpty()) {
                 Glide.with(context)
                         .load(imageUrlProfile)
-                        .transform(new RoundedCorners(30))
+                        .circleCrop()
                         .placeholder(R.drawable.ic_profile)
                         .into(holder.imageProfile);
             } else {
