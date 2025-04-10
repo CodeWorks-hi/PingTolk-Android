@@ -1,6 +1,7 @@
 package com.example.pingtolk;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -32,17 +33,37 @@ public class RoomListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
 
-        nickname = getIntent().getStringExtra("nickname");
+        SharedPreferences prefs = getSharedPreferences("PingTalkPrefs", MODE_PRIVATE);
+        nickname = prefs.getString("nickname", null);
+        if (nickname == null || nickname.isEmpty()) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         // 바인딩
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack); // Reusing the same button for logout
         btnSettings = findViewById(R.id.btnSettings);
         btnCreate = findViewById(R.id.btnCreate);
         checkFavoriteOnly = findViewById(R.id.checkFavoriteOnly);
         spinnerSort = findViewById(R.id.spinnerSort);
 
-        // 뒤로가기
-        btnBack.setOnClickListener(v -> finish());
+        // 로그아웃
+        btnBack.setOnClickListener(v -> {
+            new AlertDialog.Builder(RoomListActivity.this)
+                .setTitle("메인 화면으로 이동")
+                .setMessage("메인 화면으로 이동하시겠습니까?")
+                .setPositiveButton("이동", (dialog, which) -> {
+                    prefs.edit().clear().apply();
+                    Intent intent = new Intent(RoomListActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("취소", null)
+                .show();
+        });
 
         // 설정 이동
         btnSettings.setOnClickListener(v -> {

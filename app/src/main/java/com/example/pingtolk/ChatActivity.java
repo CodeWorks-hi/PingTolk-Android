@@ -139,7 +139,7 @@ public class ChatActivity extends AppCompatActivity {
         // 뒤로가기
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(ChatActivity.this, RoomListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         });
