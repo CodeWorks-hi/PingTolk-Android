@@ -3,6 +3,7 @@ package com.example.pingtolk;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
@@ -130,11 +131,30 @@ public class RoomListActivity extends AppCompatActivity {
         adapter = new RoomListAdapter(filteredList, room -> {
             String familyCode = (String) room.get("code");
             String title = (String) room.get("title");
-            Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
-            intent.putExtra("familyCode", familyCode);
-            intent.putExtra("nickname", nickname);
-            intent.putExtra("roomName", title); // pass title to ChatActivity
-            startActivity(intent);
+            String correctPassword = (String) room.get("password");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(RoomListActivity.this);
+            builder.setTitle("비밀번호 입력");
+
+            final EditText input = new EditText(RoomListActivity.this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+            builder.setView(input);
+
+            builder.setPositiveButton("입장", (dialog, which) -> {
+                String enteredPassword = input.getText().toString();
+                if (enteredPassword.equals(correctPassword)) {
+                    Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
+                    intent.putExtra("familyCode", familyCode);
+                    intent.putExtra("nickname", nickname);
+                    intent.putExtra("roomName", title);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(RoomListActivity.this, "비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+            builder.show();
         }, nickname);
         recyclerView.setAdapter(adapter);
 
