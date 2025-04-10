@@ -93,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (savedUrl != null && !savedUrl.isEmpty()) {
             Glide.with(this)
                     .load(savedUrl)
+                    .circleCrop()
                     .placeholder(R.drawable.ic_profile)
                     .error(R.drawable.ic_profile)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
