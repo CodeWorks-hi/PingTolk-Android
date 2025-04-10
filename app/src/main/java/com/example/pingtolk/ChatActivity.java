@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
@@ -89,10 +90,25 @@ public class ChatActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         chatRef = db.collection("rooms").document(familyCode).collection("messages");
 
-        // 시스템 입장 메시지
-        Message welcomeMsg = new Message("SYSTEM", nickname + "님이 입장하셨습니다", System.currentTimeMillis());
-        welcomeMsg.setProfileImageUrl(null);
-        chatRef.add(welcomeMsg);
+        // ✅ 입장 메시지 중복 방지 처리
+        db.collection("rooms")
+                .document(familyCode)
+                .collection("enteredUsers")
+                .document(nickname)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (!doc.exists()) {
+                        Message welcomeMsg = new Message("SYSTEM", nickname + "님이 입장하셨습니다", System.currentTimeMillis());
+                        welcomeMsg.setProfileImageUrl(null);
+                        chatRef.add(welcomeMsg);
+
+                        db.collection("rooms")
+                                .document(familyCode)
+                                .collection("enteredUsers")
+                                .document(nickname)
+                                .set(new HashMap<>());
+                    }
+                });
 
         // RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

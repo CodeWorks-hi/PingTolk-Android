@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.*;
 
 import java.util.*;
@@ -73,7 +74,50 @@ public class RoomListActivity extends AppCompatActivity {
         });
 
         // 새 방 만들기
-        btnCreate.setOnClickListener(v -> createNewRoom());
+        btnCreate.setOnClickListener(v -> {
+            BottomSheetDialog dialog = new BottomSheetDialog(RoomListActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.dialog_create_room, null);
+            dialog.setContentView(view);
+
+            EditText inputTitle = view.findViewById(R.id.editRoomTitle);
+            EditText inputPw = view.findViewById(R.id.editRoomPassword);
+            Button btnCancel = view.findViewById(R.id.btnCancel);
+            Button btnCreateRoom = view.findViewById(R.id.btnCreate);
+
+            btnCancel.setOnClickListener(view1 -> dialog.dismiss());
+
+            btnCreateRoom.setOnClickListener(view12 -> {
+                String title = inputTitle.getText().toString().trim();
+                String password = inputPw.getText().toString().trim();
+
+                if (title.isEmpty() || password.length() < 4) {
+                    Toast.makeText(RoomListActivity.this, "방 제목과 4자리 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String newCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+                Map<String, Object> roomData = new HashMap<>();
+                roomData.put("created_by", nickname);
+                roomData.put("created_at", new Date());
+                roomData.put("password", password);
+                roomData.put("title", title);
+                roomData.put("last_access", new Date());
+
+                FirebaseFirestore.getInstance().collection("rooms")
+                        .document(newCode)
+                        .set(roomData)
+                        .addOnSuccessListener(unused -> {
+                            Toast.makeText(RoomListActivity.this, "방이 생성되었습니다", Toast.LENGTH_SHORT).show();
+                            loadRooms();
+                            dialog.dismiss();
+                        })
+                        .addOnFailureListener(e ->
+                                Toast.makeText(RoomListActivity.this, "방 생성 실패", Toast.LENGTH_SHORT).show());
+            });
+
+            dialog.show();
+        });
+
 
         // RecyclerView 설정
         recyclerView = findViewById(R.id.recyclerRooms);
@@ -160,44 +204,5 @@ public class RoomListActivity extends AppCompatActivity {
         });
 
         adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * 새 방 만들기
-     */
-    private void createNewRoom() {
-        EditText input = new EditText(this);
-        input.setHint("방 이름을 입력하세요");
-
-        new AlertDialog.Builder(this)
-                .setTitle("새 방 만들기")
-                .setView(input)
-                .setPositiveButton("생성", (dialog, which) -> {
-                    String roomTitle = input.getText().toString().trim();
-                    if (roomTitle.isEmpty()) {
-                        Toast.makeText(this, "방 이름을 입력해주세요", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    String newCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-                    Map<String, Object> roomData = new HashMap<>();
-                    roomData.put("created_by", nickname);
-                    roomData.put("created_at", new Date());
-                    roomData.put("password", "1234");
-                    roomData.put("title", roomTitle);
-                    roomData.put("last_access", new Date());
-
-                    FirebaseFirestore.getInstance().collection("rooms")
-                            .document(newCode)
-                            .set(roomData)
-                            .addOnSuccessListener(unused -> {
-                                Toast.makeText(this, "새 방 생성됨: " + roomTitle, Toast.LENGTH_SHORT).show();
-                                loadRooms();
-                            })
-                            .addOnFailureListener(e ->
-                                    Toast.makeText(this, "방 생성 실패", Toast.LENGTH_SHORT).show());
-                })
-                .setNegativeButton("취소", null)
-                .show();
     }
 }

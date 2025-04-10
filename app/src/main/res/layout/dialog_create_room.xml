@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_gray_bg"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="새 방 만들기"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp" />
+
+    <EditText
+        android:id="@+id/editRoomTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="방 제목을 입력하세요"
+        android:background="@drawable/bg_edittext"
+        android:padding="10dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editRoomPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호 (4자리 숫자)"
+        android:background="@drawable/bg_edittext"
+        android:padding="10dp"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:background="@drawable/bg_outline_button"
+            android:textColor="@color/gray" />
+
+        <Button
+            android:id="@+id/btnCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="생성"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_round_button"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</LinearLayout>

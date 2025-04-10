@@ -70,30 +70,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            String roomCode = nickname + "_room";
-
-            db.collection("rooms").document(roomCode).get().addOnSuccessListener(doc -> {
-                if (!doc.exists()) {
-                    // 새 방 생성
-                    Map<String, Object> room = new HashMap<>();
-                    room.put("createdAt", new Date());
-                    room.put("password", password);
-                    db.collection("rooms").document(roomCode).set(room)
-                            .addOnSuccessListener(unused -> {
-                                saveInfo(nickname, password);
-                                openRoomList(nickname);
-                            });
-                } else {
-                    // 비밀번호 확인
-                    String savedPwCheck = doc.getString("password");
-                    if (savedPwCheck != null && savedPwCheck.equals(password)) {
-                        saveInfo(nickname, password);
-                        openRoomList(nickname);
-                    } else {
-                        Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            saveInfo(nickname, password); // SharedPreferences 저장
+            openRoomList(nickname);       // 바로 입장
         });
     }
 
