@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -54,18 +56,38 @@ public class ProfileActivity extends AppCompatActivity {
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         // 저장 버튼
-        findViewById(R.id.btnSave).setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
-        );
+        findViewById(R.id.btnSave).setOnClickListener(v -> {
+            String nickname = textNickname.getText().toString();
+            prefs.edit().putString("nickname", nickname).apply(); // ✅ 닉네임 저장
+            Toast.makeText(this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show();
+        });
 
         // 닉네임
         textNickname = findViewById(R.id.textNickname);
+        String savedNickname = prefs.getString("nickname", getString(R.string.nickname_sample)); // ✅ 저장된 닉네임 불러오기
+        textNickname.setText(savedNickname);
+
         findViewById(R.id.btnEdit).setOnClickListener(v -> {
-            if (textNickname.getText().toString().equals("김민지")) {
-                textNickname.setText("홍길동");
-            } else {
-                textNickname.setText("김민지");
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+            builder.setTitle("닉네임 수정");
+
+            final EditText input = new EditText(ProfileActivity.this);
+            input.setText(textNickname.getText().toString());
+            input.setSelection(input.getText().length()); // 커서를 맨 뒤로
+            builder.setView(input);
+
+            builder.setPositiveButton("확인", (dialog, which) -> {
+                String newNickname = input.getText().toString().trim();
+                if (!newNickname.isEmpty()) {
+                    textNickname.setText(newNickname);
+                    // 필요하다면 SharedPreferences에도 저장
+                    prefs.edit().putString("nickname", newNickname).apply();
+                }
+            });
+
+            builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+
+            builder.show();
         });
 
         // 다크모드
@@ -127,6 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
         findViewById(R.id.layoutHelp).setOnClickListener(v ->
                 Toast.makeText(this, getString(R.string.label_help), Toast.LENGTH_SHORT).show());
     }
+
 
     // 갤러리 접근 권한 확인
     private void checkGalleryPermission() {

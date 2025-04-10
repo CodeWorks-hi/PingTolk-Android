@@ -43,9 +43,10 @@
                 android:id="@+id/textNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="김민지"
+                android:text="@string/nickname_sample"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
 
             <ImageView
                 android:id="@+id/btnEdit"
