@@ -47,7 +47,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
         String title = room.get("title") != null ? (String) room.get("title") : code;
 
         //  방 제목 또는 코드 표시
-        holder.textRoomCode.setText("Ping Room: " + title);
+        holder.textRoomCode.setText(title);
 
         //  생성자 표시
         Object createdBy = room.get("created_by");

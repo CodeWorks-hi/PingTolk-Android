@@ -29,7 +29,7 @@ public class RoomListActivity extends AppCompatActivity {
     ImageView btnBack, btnSettings;
     Button btnCreate;
     CheckBox checkFavoriteOnly;
-    Spinner spinnerSort;
+    CheckBox checkEnteredOnly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class RoomListActivity extends AppCompatActivity {
         btnSettings = findViewById(R.id.btnSettings);
         btnCreate = findViewById(R.id.btnCreate);
         checkFavoriteOnly = findViewById(R.id.checkFavoriteOnly);
-        spinnerSort = findViewById(R.id.spinnerSort);
+        checkEnteredOnly = findViewById(R.id.checkEnteredOnly);
 
         // 로그아웃
         btnBack.setOnClickListener(v -> {
@@ -172,12 +172,7 @@ public class RoomListActivity extends AppCompatActivity {
 
         // 필터/정렬 이벤트
         checkFavoriteOnly.setOnCheckedChangeListener((btn, checked) -> applyFilterAndSort());
-        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                applyFilterAndSort();
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        checkEnteredOnly.setOnCheckedChangeListener((btn, checked) -> applyFilterAndSort());
 
         loadRooms();
     }
@@ -191,10 +186,11 @@ public class RoomListActivity extends AppCompatActivity {
                 .collection("favorites")
                 .get()
                 .addOnSuccessListener(favSnap -> {
-                    favoriteCodes.clear();
+                    Set<String> loadedFavorites = new HashSet<>();
                     for (DocumentSnapshot doc : favSnap.getDocuments()) {
-                        favoriteCodes.add(doc.getId());
+                        loadedFavorites.add(doc.getId());
                     }
+                    favoriteCodes = loadedFavorites;
 
                     FirebaseFirestore.getInstance().collection("rooms")
                             .get()
@@ -218,29 +214,24 @@ public class RoomListActivity extends AppCompatActivity {
      * 필터링 및 정렬 적용
      */
     private void applyFilterAndSort() {
+        // Removed redundant update of favoriteCodes; already updated in loadRooms()
+
         boolean onlyFavorite = checkFavoriteOnly.isChecked();
-        String sortOption = spinnerSort.getSelectedItem().toString();
+        boolean onlyEntered = checkEnteredOnly.isChecked();
 
         // 필터링
         filteredList.clear();
+        Set<String> enteredRooms = enterPrefs.getAll().keySet();
+
         for (Map<String, Object> room : roomList) {
+            String code = (String) room.get("code");
             boolean isFav = Boolean.TRUE.equals(room.get("isFavorite"));
-            if (!onlyFavorite || isFav) {
+
+            if ((!onlyEntered || enteredRooms.contains(code)) &&
+                (!onlyFavorite || isFav)) {
                 filteredList.add(room);
             }
         }
-
-        // 정렬
-        filteredList.sort((a, b) -> {
-            if ("방 코드 순".equals(sortOption)) {
-                return String.valueOf(a.get("code")).compareToIgnoreCase(String.valueOf(b.get("code")));
-            } else if ("최근 접속 순".equals(sortOption)) {
-                Date aTime = a.get("last_access") instanceof Date ? (Date) a.get("last_access") : new Date(0);
-                Date bTime = b.get("last_access") instanceof Date ? (Date) b.get("last_access") : new Date(0);
-                return bTime.compareTo(aTime); // 최신 먼저
-            }
-            return 0;
-        });
 
         adapter.notifyDataSetChanged();
     }

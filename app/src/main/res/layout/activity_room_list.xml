@@ -64,12 +64,14 @@
             android:textSize="14sp"
             android:textColor="#444444" />
 
-        <Spinner
-            android:id="@+id/spinnerSort"
-            android:layout_width="wrap_content"
+        <CheckBox
+            android:id="@+id/checkEnteredOnly"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:entries="@array/sort_options"
-            android:spinnerMode="dropdown" />
+            android:layout_weight="1"
+            android:text="입장한 방만 보기"
+            android:textSize="14sp"
+            android:textColor="#444444" />
     </LinearLayout>
 
     <!--  채팅방 리스트 -->
