@@ -84,8 +84,10 @@ public class ChatActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         recyclerMessages = findViewById(R.id.recyclerMessages);
 
+
         textRoomName.setText(R.string.room_name);
-        textRoomCode.setText(familyCode);
+        String roomCode = getIntent().getStringExtra("roomName");
+        textRoomCode.setText(roomCode != null ? roomCode : getString(R.string.room_code));
 
         db = FirebaseFirestore.getInstance();
         chatRef = db.collection("rooms").document(familyCode).collection("messages");

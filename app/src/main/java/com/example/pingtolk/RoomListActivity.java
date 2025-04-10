@@ -110,6 +110,11 @@ public class RoomListActivity extends AppCompatActivity {
                             Toast.makeText(RoomListActivity.this, "방이 생성되었습니다", Toast.LENGTH_SHORT).show();
                             loadRooms();
                             dialog.dismiss();
+                            Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
+                            intent.putExtra("familyCode", newCode);
+                            intent.putExtra("nickname", nickname);
+                            intent.putExtra("roomName", title);
+                            startActivity(intent);
                         })
                         .addOnFailureListener(e ->
                                 Toast.makeText(RoomListActivity.this, "방 생성 실패", Toast.LENGTH_SHORT).show());
@@ -124,9 +129,11 @@ public class RoomListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RoomListAdapter(filteredList, room -> {
             String familyCode = (String) room.get("code");
+            String title = (String) room.get("title");
             Intent intent = new Intent(RoomListActivity.this, ChatActivity.class);
             intent.putExtra("familyCode", familyCode);
             intent.putExtra("nickname", nickname);
+            intent.putExtra("roomName", title); // pass title to ChatActivity
             startActivity(intent);
         }, nickname);
         recyclerView.setAdapter(adapter);
