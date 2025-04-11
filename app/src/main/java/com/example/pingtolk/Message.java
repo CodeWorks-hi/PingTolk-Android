@@ -19,18 +19,18 @@ public class Message {
         this.isImage = isImage;
     }
 
-    // ✅ 프로필 이미지 URL
+    //  프로필 이미지 URL
     private String profileImageUrl;
 
-    // ✅ 이미지 전송 기능을 위한 추가 필드
+    //  이미지 전송 기능을 위한 추가 필드
     private String type;     // "text" 또는 "image"
     private String imageUrl; // 이미지 전송용 Firebase Storage URL
 
-    // ✅ 기본 생성자 (Firestore에서 필요)
+    //  기본 생성자 (Firestore에서 필요)
     public Message() {
     }
 
-    // ✅ 일반 텍스트 메시지 생성자
+    //  일반 텍스트 메시지 생성자
     public Message(String sender, String text, long timestamp) {
         this.sender = sender;
         this.text = text;
@@ -39,7 +39,7 @@ public class Message {
         this.type = "text"; // 기본값은 텍스트 메시지
     }
 
-    // ✅ 날짜 구분용 메시지 생성자
+    //  날짜 구분용 메시지 생성자
     public static Message createDateSeparator(long timestamp) {
         Message msg = new Message();
         msg.sender = "";
