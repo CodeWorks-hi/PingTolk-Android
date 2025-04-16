@@ -66,6 +66,8 @@
     <!-- Chat Room List Filters -->
     <string name="check_favorite_only">Show Favorites Only</string>
     <string name="spinner_sort_label">Sort By</string>
+    <string name="textNewChatAlert">You have a new message!</string>
+
 
     <!-- Profile Settings -->
     <string name="profile_title">Profile Settings</string>

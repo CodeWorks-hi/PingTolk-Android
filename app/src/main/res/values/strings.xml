@@ -60,6 +60,8 @@
     <!--  채팅방 리스트 필터링 -->
     <string name="check_favorite_only">즐겨찾기만 보기</string>
     <string name="spinner_sort_label">정렬 기준</string>
+    <string name="textNewChatAlert">새로운 채팅이 도착했습니다!</string>
+
 
     <!--  프로필 설정 -->
     <string name="profile_title">프로필 설정</string>
