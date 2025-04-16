@@ -3,6 +3,8 @@ package com.example.pingtolk;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.view.View;
 import android.widget.*;
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.*;
 
@@ -185,6 +188,7 @@ public class RoomListActivity extends AppCompatActivity {
     /**
      * 방 목록 + 즐겨찾기 정보 불러오기
      */
+// ...
     private void loadRooms() {
         FirebaseFirestore.getInstance().collection("users")
                 .document(nickname)
@@ -197,10 +201,10 @@ public class RoomListActivity extends AppCompatActivity {
                     }
                     favoriteCodes = loadedFavorites;
 
-                    FirebaseFirestore.getInstance().collection("rooms")
+                    Task<QuerySnapshot> querySnapshotTask = FirebaseFirestore.getInstance().collection("rooms")
                             .get()
                             .addOnSuccessListener(querySnapshot -> {
-                                roomList.clear();
+                                roomList.clear(); // <- 누락되어 있었으면 추가
                                 for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                                     Map<String, Object> data = doc.getData();
                                     if (data != null) {
@@ -209,11 +213,38 @@ public class RoomListActivity extends AppCompatActivity {
                                         data.put("isFavorite", favoriteCodes.contains(code));
                                         roomList.add(data);
                                     }
+
+                                    String roomCode = doc.getId();
+                                    FirebaseFirestore.getInstance()
+                                            .collection("rooms")
+                                            .document(roomCode)
+                                            .collection("messages")
+                                            .orderBy("timestamp", Query.Direction.DESCENDING)
+                                            .limit(1)
+                                            .addSnapshotListener((snapshots, error) -> {
+                                                if (snapshots != null && !snapshots.isEmpty()) {
+                                                    DocumentChange change = snapshots.getDocumentChanges().get(0);
+                                                    if (change.getType() == DocumentChange.Type.ADDED) {
+                                                        for (Map<String, Object> room : roomList) {
+                                                            if (roomCode.equals(room.get("code"))) {
+                                                                room.put("hasNewMessage", true);
+                                                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                                                    room.put("hasNewMessage", false);
+                                                                    applyFilterAndSort();
+                                                                }, 3000);
+                                                                break;
+                                                            }
+                                                        }
+                                                        applyFilterAndSort();
+                                                    }
+                                                }
+                                            });
                                 }
-                                applyFilterAndSort();
                             });
                 });
     }
+
+
 
     /**
      * 필터링 및 정렬 적용

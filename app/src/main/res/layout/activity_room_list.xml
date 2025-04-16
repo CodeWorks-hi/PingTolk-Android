@@ -85,15 +85,18 @@
         android:clipToPadding="false" />
 
     <!--  방 만들기 버튼 -->
-    <Button
+    <ImageButton
         android:id="@+id/btnCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        android:text="@string/btn_create"
-        android:textColor="#FFFFFF"
         android:backgroundTint="#247CFF"
-        android:elevation="4dp" />
+        android:scaleType="centerInside"
+        android:elevation="6dp"
+        android:padding="8dp"
+        android:background="@drawable/rounded_button_background"
+        android:src="@drawable/chat_plus"
+        android:contentDescription="@string/btn_create" />
 </RelativeLayout>

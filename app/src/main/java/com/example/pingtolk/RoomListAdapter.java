@@ -28,6 +28,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
     private final OnRoomClickListener listener;
     private final String nickname;
 
+    // 생성자 (RoomViewHolder 내부에서 잘못 정의된 것 해결)
     public RoomListAdapter(List<Map<String, Object>> rooms, OnRoomClickListener listener, String nickname) {
         this.rooms = rooms;
         this.listener = listener;
@@ -47,22 +48,20 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
         String code = (String) room.get("code");
         String title = room.get("title") != null ? (String) room.get("title") : code;
 
-        //  방 제목 또는 코드 표시
         holder.textRoomCode.setText(title);
 
-        //  생성자 표시
         Object createdBy = room.get("created_by");
         holder.textCreatedBy.setText("생성자: " + (createdBy != null ? createdBy.toString() : ""));
 
-        //  입장 버튼 클릭 이벤트
         holder.btnEnter.setOnClickListener(v -> listener.onRoomClick(room));
 
-        //  즐겨찾기 상태 설정
         boolean isFavorite = Boolean.TRUE.equals(room.get("isFavorite"));
         holder.btnFavorite.setImageResource(isFavorite ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
         holder.btnFavorite.setTag(isFavorite);
 
-        //  즐겨찾기 토글 처리
+        boolean hasNewMessage = Boolean.TRUE.equals(room.get("hasNewMessage"));
+        holder.alertView.setVisibility(hasNewMessage ? View.VISIBLE : View.GONE);
+
         holder.btnFavorite.setOnClickListener(v -> {
             boolean nowFavorite = holder.btnFavorite.getTag() != null && (boolean) holder.btnFavorite.getTag();
 
@@ -76,11 +75,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
                 favRef.delete().addOnSuccessListener(aVoid -> {
                     holder.btnFavorite.setImageResource(R.drawable.ic_star_outline);
                     holder.btnFavorite.setTag(false);
+                    Toast.makeText(v.getContext(), "즐겨찾기 해제됨", Toast.LENGTH_SHORT).show();
                 });
             } else {
                 favRef.set(new HashMap<>()).addOnSuccessListener(aVoid -> {
                     holder.btnFavorite.setImageResource(R.drawable.ic_star_filled);
                     holder.btnFavorite.setTag(true);
+                    Toast.makeText(v.getContext(), "즐겨찾기에 추가됨", Toast.LENGTH_SHORT).show();
                 });
             }
         });
@@ -92,7 +93,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
     }
 
     static class RoomViewHolder extends RecyclerView.ViewHolder {
-        TextView textRoomCode, textCreatedBy;
+        TextView textRoomCode, textCreatedBy, alertView;
         Button btnEnter;
         ImageView btnFavorite;
 
@@ -102,6 +103,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
             textCreatedBy = itemView.findViewById(R.id.textCreatedBy);
             btnEnter = itemView.findViewById(R.id.btnEnterRoom);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
+            alertView = itemView.findViewById(R.id.textNewChatAlert);
         }
     }
 }
